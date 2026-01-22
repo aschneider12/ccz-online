@@ -1,8 +1,10 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-export default function HomeScreen() {
+export default function IndexScreen() {
 
+  const router = useRouter();
   const [cpf, setCpf] = useState('');
 
   const formatCPF = (text) => {
@@ -23,11 +25,46 @@ export default function HomeScreen() {
     console.log('Login via GOV.BR');
   };
 
-  const handleDirectLogin = () => {
-    console.log('Login direto com CPF:', cpf);
-  };
+  const handleDirectLogin = async () => {
+    try {
+      
+      console.log('fazendo request')
+      const response = await fetch(
+        "http://10.10.1.113:8080/api/v1/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cpf: cpf
+          }),
+        }
+      );
   
+      const text = await response.text(); 
+      console.log("Status:", response.status);
+      console.log("Resposta do backend:", text);
+  
+      if (!response.ok) {
+        throw new Error(text);
+      }
+  
+      const data = JSON.parse(text);
+      console.log("Login OK:", data);
+  
+      console.log("Login realizado:", data);
+  
+      router.push("/home");
+      // redireciona para nova tela
+    
+    } catch (error: any) {
+      Alert.alert("Erro no login", error.message);
+    }
+  };
+
   return (
+
     <View style={styles.container}>
     <StatusBar barStyle="light-content" />
     

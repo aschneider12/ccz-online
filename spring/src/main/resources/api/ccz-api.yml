@@ -8,266 +8,533 @@ info:
     name: A. Schneider
     url: http://github.com/aschneider12
 servers:
-  - url: http://localhost:8080
-    description: Local server
+  - url: http://localhost:8080/api/v1
+    description: Servidor de Desenvolvimento
+
 tags:
-  - name: Alerta CCZ
-    description: Operações permitidas ao agente de saúde CCZ
+  - name: Autenticação
+    description: Endpoints para autenticação de usuários
+  - name: Usuários
+    description: Operações CRUD para gerenciamento de usuários
+
 paths:
-  /api/v1/alerta:
-    get:
-      tags:
-        - Alerta CCZ
-      summary: Buscar todos alertas emitidos
-      description: Retrieve a list of all tasks
-      operationId: getAllTasks
-      parameters:
-        - $ref: '#/components/parameters/page'
-        - $ref: '#/components/parameters/size'
-        - $ref: '#/components/parameters/sort'
-        - $ref: '#/components/parameters/status'
-      responses:
-        '200':
-          description: A list of tasks
-          content:
-            application/json:
-              schema:
-                type: object
-                $ref: '#/components/schemas/PaginatedResult'
+  /auth/login:
     post:
       tags:
-        - Tasks
-      summary: Create a new task
-      description: Create a new task with the provided details
-      operationId: createTask
+        - Autenticação
+      summary: Realizar login no sistema
+      description: Autentica um usuário através do CPF API e retorna os dados do usuário
+      operationId: login
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateTaskRequest'
-        responses:
-          '201':
-            description: Task created successfully
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Task'
-          '400':
-            description: Bad request
-          '500':
-            description: Internal server error
-  /api/v1/tasks/{taskId}:
+              $ref: '#/components/schemas/LoginRequest'
+            examples:
+              exemplo1:
+                summary: Login com CPF válido
+                value:
+                  cpf: "12345678901"
+      responses:
+        '200':
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioDTO'
+              examples:
+                exemplo1:
+                  summary: Usuário autenticado
+                  value:
+                    id: 1
+                    nome: "João da Silva"
+                    cartaoSus: 123456789012345
+                    perfil: "AGENTE"
+                    cpf: "12345678901"
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /usuarios:
     get:
       tags:
-        - Tasks
-      summary: Get a task by ID
-      description: Retrieve a task by its unique identifier
-      operationId: getTask
+        - Usuários
+      summary: Listar todos os usuários
+      description: Retorna uma lista paginada de todos os usuários cadastrados
+      operationId: listarUsuarios
       parameters:
-        - name: taskId
+        - name: page
+          in: query
+          description: Número da página (inicia em 0)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Quantidade de registros por página
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: sort
+          in: query
+          description: Campo para ordenação (ex. nome,asc ou id,desc)
+          required: false
+          schema:
+            type: string
+            default: "id,asc"
+      responses:
+        '200':
+          description: Lista de usuários retornada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageUsuarioDTO'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      tags:
+        - Usuários
+      summary: Criar novo usuário
+      description: Cadastra um novo usuário no sistema
+      operationId: criarUsuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioCreateDTO'
+            examples:
+              exemplo1:
+                summary: Novo usuário
+                value:
+                  nome: "Maria Santos"
+                  cartaoSus: 987654321012345
+                  perfil: "CIDADAO"
+                  cpf: "98765432109"
+      responses:
+        '201':
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioDTO'
+              examples:
+                exemplo1:
+                  summary: Usuário cadastrado
+                  value:
+                    id: 2
+                    nome: "Maria Santos"
+                    cartaoSus: 987654321012345
+                    perfil: "CIDADAO"
+                    cpf: "98765432109"
+        '400':
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: CPF já cadastrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /usuarios/{id}:
+    get:
+      tags:
+        - Usuários
+      summary: Buscar usuário por ID
+      description: Retorna os dados de um usuário específico
+      operationId: buscarUsuarioPorId
+      parameters:
+        - name: id
           in: path
+          description: ID do usuário
           required: true
-          description: The ID of the task to retrieve
           schema:
             type: integer
             format: int64
       responses:
         '200':
-          description: A task object
+          description: Usuário encontrado
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
+                $ref: '#/components/schemas/UsuarioDTO'
         '404':
-          description: Task not found
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
-          description: Internal server error
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
     put:
       tags:
-        - Tasks
-      summary: Update a task by ID
-      description: Update an existing task with the provided details
-      operationId: updateTask
+        - Usuários
+      summary: Atualizar usuário
+      description: Atualiza os dados de um usuário existente
+      operationId: atualizarUsuario
       parameters:
-        - name: taskId
+        - name: id
           in: path
+          description: ID do usuário
           required: true
-          description: The ID of the task to update
           schema:
             type: integer
             format: int64
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdateTaskRequest'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioUpdateDTO'
+            examples:
+              exemplo1:
+                summary: Atualização de usuário
+                value:
+                  nome: "João da Silva Santos"
+                  cartaoSus: 123456789012345
+                  perfil: "ADMIN"
       responses:
         '200':
-          description: Task updated successfully
+          description: Usuário atualizado com sucesso
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
+                $ref: '#/components/schemas/UsuarioDTO'
         '400':
-          description: Bad request
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
-          description: Task not found
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
-          description: Internal server error
-  /api/v1/tasks/{taskId}/cancel:
-    post:
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
       tags:
-        - Tasks
-      summary: Cancel a task by ID
-      description: Cancel an existing task by its unique identifier
-      operationId: cancelTask
+        - Usuários
+      summary: Excluir usuário
+      description: Remove um usuário do sistema
+      operationId: excluirUsuario
       parameters:
-        - name: taskId
+        - name: id
           in: path
+          description: ID do usuário
           required: true
-          description: The ID of the task to cancel
           schema:
             type: integer
             format: int64
       responses:
-        '200':
-          description: Task canceled successfully
+        '204':
+          description: Usuário excluído com sucesso
         '404':
-          description: Task not found
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
-          description: Internal server error
-  /api/v1/tasks/{taskId}/complete:
-    post:
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /usuarios/cpf/{cpf}:
+    get:
       tags:
-        - Tasks
-      summary: Mark a task as completed
-      description: Mark an existing task as completed by its unique identifier
-      operationId: completeTask
+        - Usuários
+      summary: Buscar usuário por CPF
+      description: Retorna os dados de um usuário através do CPF
+      operationId: buscarUsuarioPorCpf
       parameters:
-        - name: taskId
+        - name: cpf
           in: path
+          description: CPF do usuário (apenas números)
           required: true
-          description: The ID of the task to mark as completed
           schema:
-            type: integer
-            format: int64
+            type: string
+            pattern: '^\d{11}$'
       responses:
         '200':
-          description: Task marked as completed successfully
+          description: Usuário encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioDTO'
         '404':
-          description: Task not found
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
-          description: Internal server error
-  /api/v1/tasks/{taskId}/execute:
-    post:
-      tags:
-        - Tasks
-      summary: Execute a task by ID
-      description: Execute an existing task by its unique identifier
-      operationId: executeTask
-      parameters:
-        - name: taskId
-          in: path
-          required: true
-          description: The ID of the task to execute
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Task executed successfully
-        '404':
-          description: Task not found
-        '500':
-          description: Internal server error
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 components:
-  parameters:
-    page:
-      name: page
-      in: query
-      schema:
-        type: integer
-        default: 0
-    size:
-      name: size
-      in: query
-      schema:
-        type: integer
-        default: 10
-    sort:
-      name: sort
-      in: query
-      schema:
-        type: string
-        default: id,asc
-    status:
-      name: status
-      in: query
-      schema:
-        type: string
-
   schemas:
-    CreateTaskRequest:
+    LoginRequest:
       type: object
-      required: [ title, description ]
+      required:
+        - cpf
       properties:
-        title:
+        cpf:
           type: string
-        description:
-          type: string
+          description: CPF do usuário (apenas números)
+          pattern: '^\d{11}$'
+          minLength: 11
+          maxLength: 11
+          example: "12345678901"
 
-    UpdateTaskRequest:
+    UsuarioDTO:
       type: object
-      required: [ title, description ]
       properties:
-        title:
+        id:
+          type: integer
+          format: int64
+          description: ID único do usuário
+          example: 1
+        nome:
           type: string
-        description:
+          description: Nome completo do usuário
+          example: "João da Silva"
+        cartaoSus:
+          type: integer
+          format: int64
+          description: Número do Cartão SUS
+          example: 123456789012345
+        perfil:
           type: string
+          description: Perfil de acesso do usuário
+          example: "AGENTE"
+          enum:
+            - ADMIN
+            - AGENTE
+            - CIDADAO
+            - CCZ
+        cpf:
+          type: string
+          description: CPF do usuário
+          pattern: '^\d{11}$'
+          example: "12345678901"
+      required:
+        - id
+        - nome
+        - cartaoSus
+        - perfil
+        - cpf
 
-    PaginatedResult:
+    UsuarioCreateDTO:
+      type: object
+      required:
+        - nome
+        - cartaoSus
+        - perfil
+        - cpf
+      properties:
+        nome:
+          type: string
+          description: Nome completo do usuário
+          minLength: 3
+          maxLength: 255
+          example: "Maria Santos"
+        cartaoSus:
+          type: integer
+          format: int64
+          description: Número do Cartão SUS
+          example: 987654321012345
+        perfil:
+          type: string
+          description: Perfil de acesso do usuário
+          default: "25"
+          example: "CIDADAO"
+          enum:
+            - ADMIN
+            - AGENTE
+            - CIDADAO
+            - CCZ
+        cpf:
+          type: string
+          description: CPF do usuário (apenas números)
+          pattern: '^\d{11}$'
+          minLength: 11
+          maxLength: 11
+          example: "98765432109"
+
+    UsuarioUpdateDTO:
+      type: object
+      properties:
+        nome:
+          type: string
+          description: Nome completo do usuário
+          minLength: 3
+          maxLength: 255
+          example: "João da Silva Santos"
+        cartaoSus:
+          type: integer
+          format: int64
+          description: Número do Cartão SUS
+          example: 123456789012345
+        perfil:
+          type: string
+          description: Perfil de acesso do usuário
+          example: "ADMIN"
+          enum:
+            - ADMIN
+            - AGENTE
+            - CIDADAO
+            - CCZ
+
+    PageUsuarioDTO:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: '#/components/schemas/Task'
+            $ref: '#/components/schemas/UsuarioDTO'
+        pageable:
+          type: object
+          properties:
+            pageNumber:
+              type: integer
+              example: 0
+            pageSize:
+              type: integer
+              example: 20
+            sort:
+              type: object
+              properties:
+                sorted:
+                  type: boolean
+                  example: true
+                unsorted:
+                  type: boolean
+                  example: false
+            offset:
+              type: integer
+              example: 0
+            paged:
+              type: boolean
+              example: true
+            unpaged:
+              type: boolean
+              example: false
         totalElements:
           type: integer
           format: int64
+          example: 100
         totalPages:
           type: integer
-        page:
-          type: integer
+          example: 5
+        last:
+          type: boolean
+          example: false
         size:
           type: integer
-
-    Animal:
-      type: object
-      required: [ title, description ]
-      properties:
-        id:
+          example: 20
+        number:
           type: integer
-          format: int64
-        especie:
+          example: 0
+        sort:
+          type: object
+          properties:
+            sorted:
+              type: boolean
+              example: true
+            unsorted:
+              type: boolean
+              example: false
+        numberOfElements:
+          type: integer
+          example: 20
+        first:
+          type: boolean
+          example: true
+        empty:
+          type: boolean
+          example: false
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
           type: string
-        description:
-          type: string
+          format: date-time
+          description: Data e hora do erro
+          example: "2026-01-22T10:30:00Z"
         status:
+          type: integer
+          description: Código de status HTTP
+          example: 400
+        error:
           type: string
-          enum:
-            - OPEN
-            - IN_PROGRESS
-            - COMPLETED
-            - CANCELED
-        createdAt:
+          description: Tipo do erro
+          example: "Bad Request"
+        message:
           type: string
-          format: date-time
-        updatedAt:
+          description: Mensagem descritiva do erro
+          example: "CPF inválido"
+        path:
           type: string
-          format: date-time
-        deletedAt:
-          type: string
-          format: date-time
+          description: Caminho da requisição que gerou o erro
+          example: "/api/v1/auth/login"
+      required:
+        - timestamp
+        - status
+        - error
+        - message
+        - path
