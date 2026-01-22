@@ -1,3 +1,4 @@
+import SharedButton from '@/components/SharedButton';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -24,6 +25,10 @@ export default function IndexScreen() {
   const handleGovBrLogin = () => {
     console.log('Login via GOV.BR');
   };
+
+  const handleCriarUsuario = () => {
+    router.push("/criarUsuario");
+  }
 
   const handleDirectLogin = async () => {
     try {
@@ -96,7 +101,9 @@ export default function IndexScreen() {
       >
         <Text style={styles.buttonSecondaryText}>ENTRAR</Text>
       </TouchableOpacity>
+
     </View>
+      <SharedButton title='Criar usuário' onPress={handleCriarUsuario}></SharedButton>
   </View>
   );
 }
