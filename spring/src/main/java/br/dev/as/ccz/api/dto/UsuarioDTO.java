@@ -1,5 +1,6 @@
 package br.dev.as.ccz.api.dto;
 
+import br.dev.as.ccz.enums.PerfilEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -23,42 +24,8 @@ public class UsuarioDTO   {
 
   private Long cartaoSus = null;
 
-  /**
-   * Perfil de acesso do usuário
-   */
-  public enum PerfilEnum {
-    ADMIN("ADMIN"),
-    
-    AGENTE("AGENTE"),
-    
-    CIDADAO("CIDADAO"),
-    
-    CCZ("CCZ");
 
-    private String value;
-
-    PerfilEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static PerfilEnum fromValue(String text) {
-      for (PerfilEnum b : PerfilEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("perfil")
-
   private PerfilEnum perfil = null;
 
   @JsonProperty("cpf")

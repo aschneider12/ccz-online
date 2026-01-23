@@ -18,12 +18,13 @@ export default function Home() {
   return (
 
     <View style={styles.container}>
-      <Text style={styles.text}>Bem vindo usuario</Text>
+
+      <Text style={styles.text}>Bem vindo '~~NOME DO USUARIO~~'</Text>
 
       <SharedButton
-          title="Tenho uma arena"
-          onPress={() => router.push("/notificacao")}
-          style={{ backgroundColor: 'green' }}
+          title="Solicitar auxílio"
+          onPress={() => router.push("/cadastroSolicitacao")}
+          style={{ backgroundColor: 'blue' }}
           textStyle={{ fontSize: 20 }}
         />
 

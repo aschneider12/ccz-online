@@ -14,5 +14,32 @@ public class TipoNotificacaoEntity {
     private String descricao;
 
     @Column(name = "urgencia", nullable = false)
-    private Long urgencia;
+    private String urgencia;
+
+    public TipoNotificacaoEntity() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getUrgencia() {
+        return urgencia;
+    }
+
+    public void setUrgencia(String urgencia) {
+        this.urgencia = urgencia;
+    }
 }

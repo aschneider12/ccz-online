@@ -1,16 +1,16 @@
 import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 
@@ -30,8 +30,7 @@ const CadastroUsuarioScreen = () => {
 
   const perfis = [
     { label: 'Cidadão', value: 'CIDADAO' },
-    { label: 'Agente', value: 'AGENTE' },
-    { label: 'CCZ', value: 'CCZ' },
+    { label: 'Agente CCZ', value: 'AGENTE_CCZ' },
     { label: 'Administrador', value: 'ADMIN' }
   ];
 
@@ -83,7 +82,8 @@ const CadastroUsuarioScreen = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8080/api/v1/usuarios', {
+
+      const response = await fetch('http://10.10.1.113:8080/api/v1/usuarios', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,8 +97,9 @@ const CadastroUsuarioScreen = () => {
       });
 
       const data = await response.json();
-
-      if (response.ok) {
+      console.log(response)
+      console.log(data)
+      if (response.status == 201) {
         Alert.alert(
           'Sucesso!',
           'Usuário cadastrado com sucesso',
@@ -110,6 +111,7 @@ const CadastroUsuarioScreen = () => {
           ]
         );
       } else {
+        console.log('caiu no erro', data)
         // Trata erros da API
         let mensagemErro = 'Erro ao cadastrar usuário';
         
@@ -130,6 +132,7 @@ const CadastroUsuarioScreen = () => {
     } finally {
       setLoading(false);
     }
+
   };
 
   const limparFormulario = () => {

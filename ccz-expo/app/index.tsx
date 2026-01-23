@@ -1,12 +1,12 @@
 import SharedButton from '@/components/SharedButton';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function IndexScreen() {
 
   const router = useRouter();
-  const [cpf, setCpf] = useState('');
+  const [cpf, setCpf] = useState('111.111.111-11');
 
   const formatCPF = (text) => {
     const cleaned = text.replace(/\D/g, '');
@@ -82,25 +82,14 @@ export default function IndexScreen() {
         style={styles.input}
         placeholder="digite seu CPF"
         placeholderTextColor="#888"
-        value={cpf}
+        value={cpf} 
         onChangeText={handleCPFChange}
         keyboardType="numeric"
         maxLength={14}
       />
       
-      <TouchableOpacity 
-        style={styles.buttonPrimary}
-        onPress={handleGovBrLogin}
-      >
-        <Text style={styles.buttonPrimaryText}>Login via GOV.BR</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity 
-        style={styles.buttonSecondary}
-        onPress={handleDirectLogin}
-      >
-        <Text style={styles.buttonSecondaryText}>ENTRAR</Text>
-      </TouchableOpacity>
+      <SharedButton title='ENTRAR' onPress={handleDirectLogin}></SharedButton>
+      <SharedButton title='Login via GOV.BR' onPress={handleGovBrLogin}></SharedButton>
 
     </View>
       <SharedButton title='Criar usuário' onPress={handleCriarUsuario}></SharedButton>
@@ -117,10 +106,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   card: {
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#1a1a17',
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: '#ffffff',
+    borderColor: '#fffff',
     padding: 40,
     width: '100%',
     maxWidth: 400,

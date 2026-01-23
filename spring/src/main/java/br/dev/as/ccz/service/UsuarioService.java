@@ -6,6 +6,7 @@ import br.dev.as.ccz.api.dto.UsuarioUpdateDTO;
 import br.dev.as.ccz.api.exception.CpfJaCadastradoException;
 import br.dev.as.ccz.api.exception.UsuarioNaoEncontradoException;
 import br.dev.as.ccz.domain.UsuarioEntity;
+import br.dev.as.ccz.enums.PerfilEnum;
 import br.dev.as.ccz.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -140,7 +141,7 @@ public class UsuarioService {
         dto.setId(usuario.getId());
         dto.setNome(usuario.getNome());
         dto.setCartaoSus(usuario.getCartaoSus());
-        dto.setPerfil(Enum.valueOf(UsuarioDTO.PerfilEnum.class, usuario.getPerfil()));
+        dto.setPerfil(Enum.valueOf(PerfilEnum.class, usuario.getPerfil()));
         dto.setCpf(usuario.getCpf());
         return dto;
     }
