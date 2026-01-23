@@ -19,21 +19,13 @@ export default function TabsLayout() {
           ),
         }} 
       />
-        <Tabs.Screen 
-          name="cadastroSolicitacao" 
-          options={{ 
-            title: "Solicitacao",
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="map-outline" size={size} color={color} />
-            ),
-          }} 
-        />
+
       <Tabs.Screen 
         name="explore" 
         options={{ 
-          title: "Região",
+          title: "Alertas",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="compass" size={size} color={color} />
+            <Ionicons name="map-outline" size={size} color={color} />
           ),
         }} 
       />
