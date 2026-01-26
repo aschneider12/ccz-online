@@ -44,6 +44,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
+
     public ResponseEntity<UsuarioDTO> login(@Valid @RequestBody LoginRequest loginRequest) {
         UsuarioDTO usuario = usuarioService.buscarPorCpf(loginRequest.getCpf());
         return ResponseEntity.ok(usuario);

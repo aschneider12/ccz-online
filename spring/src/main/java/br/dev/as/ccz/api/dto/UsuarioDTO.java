@@ -1,13 +1,10 @@
 package br.dev.as.ccz.api.dto;
 
 import br.dev.as.ccz.enums.PerfilEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.Objects;
 
@@ -15,25 +12,23 @@ import java.util.Objects;
  * UsuarioDTO
  */
 public class UsuarioDTO   {
+
   @JsonProperty("id")
   private Long id = null;
+
   @JsonProperty("nome")
-
   private String nome = null;
+
   @JsonProperty("cartaoSus")
-
   private Long cartaoSus = null;
-
 
   @JsonProperty("perfil")
   private PerfilEnum perfil = null;
 
   @JsonProperty("cpf")
-
   private String cpf = null;
 
-
-  public UsuarioDTO id(Long id) { 
+  public UsuarioDTO id(Long id) {
 
     this.id = id;
     return this;
