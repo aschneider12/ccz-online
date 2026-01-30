@@ -2,13 +2,16 @@ import SharedButton from '@/components/SharedButton';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
+import { useUser } from '../context/context';
 
 export default function IndexScreen() {
 
   const router = useRouter();
   const [cpf, setCpf] = useState('111.111.111-11');
 
-  const formatCPF = (text) => {
+  const { setUser } = useUser();
+
+  const formatCPF = (text: string) => {
     const cleaned = text.replace(/\D/g, '');
     const limited = cleaned.substring(0, 11);
     
@@ -18,7 +21,7 @@ export default function IndexScreen() {
     return `${limited.slice(0, 3)}.${limited.slice(3, 6)}.${limited.slice(6, 9)}-${limited.slice(9)}`;
   };
 
-  const handleCPFChange = (text) => {
+  const handleCPFChange = (text: string) => {
     setCpf(formatCPF(text));
   };
 
@@ -35,7 +38,7 @@ export default function IndexScreen() {
       
       console.log('fazendo request')
       const response = await fetch(
-        "http://10.10.1.113:8080/api/v1/auth/login",
+        "http://127.0.0.1:8080/api/v1/auth/login",
         {
           method: "POST",
           headers: {
@@ -59,6 +62,9 @@ export default function IndexScreen() {
       console.log("Login OK:", data);
   
       console.log("Login realizado:", data);
+
+      setUser(data);
+      
   
       router.push("/home");
       // redireciona para nova tela

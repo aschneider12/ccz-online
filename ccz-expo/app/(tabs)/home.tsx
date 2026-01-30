@@ -2,12 +2,15 @@ import SharedButton from "@/components/SharedButton";
 import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useUser } from "../../context/context";
+
 
 
 export default function Home() {
   
     const router = useRouter();
  
+    const { user } = useUser();
  
   //const token = authContext.currentUser?.getIdTokenResult();
   //token?.then( (authObject) => {
@@ -19,7 +22,7 @@ export default function Home() {
 
     <View style={styles.container}>
 
-      <Text style={styles.text}>Bem vindo '~~NOME DO USUARIO~~'</Text>
+      <Text style={styles.text}>Bem vindo {user?.nome}</Text>
 
       <SharedButton
           title="Solicitar auxílio"
