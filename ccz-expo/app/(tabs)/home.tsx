@@ -10,8 +10,8 @@ export default function Home() {
   
     const router = useRouter();
  
-    const { user } = useUser();
- 
+    
+    const { user } = useUser(); 
   //const token = authContext.currentUser?.getIdTokenResult();
   //token?.then( (authObject) => {
    // console.log(authObject.token)

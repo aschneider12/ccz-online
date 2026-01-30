@@ -1,3 +1,4 @@
+import { API_URLS } from '@/config/api';
 import { IAlertaCidadao } from '@/interfaces/IAlertaCidadao';
 import { IEspecie } from '@/interfaces/IEspecie';
 import { IMunicipio } from '@/interfaces/IMunicipio';
@@ -56,11 +57,13 @@ const CadastroAlertaCidadaoScreen = () => {
   }, []);
 
   const carregarMunicipios = async () => {
-    /*try {
+    try {
+
       // Substitua pela chamada real à sua API
-      const response = await fetch('http://10.10.1.113:8080/api/v1/municipios');
+      const response = await fetch(API_URLS.MUNICIPIOS.BASE);
       const data = await response.json();
       setMunicipios(data);
+
     } catch (error) {
       console.error('Erro ao carregar municípios:', error);
       // Dados mockados para exemplo*/
@@ -69,15 +72,18 @@ const CadastroAlertaCidadaoScreen = () => {
         { id: 2, descricao: 'Dourados', uf: 'MS' },
         { id: 3, descricao: 'Três Lagoas', uf: 'MS' },
       ]);
-    //}
+    }
   };
 
   const carregarTiposNotificacao = async () => {
-   /* try {
-      const response = await fetch('http://10.10.1.113:8080/api/v1/tipos-notificacao');
+    try {
+
+      const response = await fetch(API_URLS.TIPOS_NOTIFICACAO.BASE);
       const data = await response.json();
       setTiposNotificacao(data);
+      
     } catch (error) {
+
       console.error('Erro ao carregar tipos de notificação:', error);
       // Dados mockados*/
       setTiposNotificacao([
@@ -86,13 +92,16 @@ const CadastroAlertaCidadaoScreen = () => {
         { id: 3, descricao: 'Rato - Média', urgencia: 1 },
       ]);
     
+    }
   };
 
   const carregarEspecies = async () => {
-  /*  try {
-      const response = await fetch('http://10.10.1.113:8080/api/v1/especies');
+    try {
+
+      const response = await fetch(API_URLS.ESPECIES.BASE);
       const data = await response.json();
       setEspecies(data);
+
     } catch (error) {
       console.error('Erro ao carregar espécies:', error);
       // Dados mockados*/
@@ -101,7 +110,7 @@ const CadastroAlertaCidadaoScreen = () => {
         { id: 2, descricao: 'Rattus norvegicus (Rato de esgoto)' },
         { id: 3, descricao: 'Tityus serrulatus (Escorpião amarelo)' },
       ]);
-    //}
+    }
   };
 
   // Obter localização atual

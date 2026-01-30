@@ -1,3 +1,4 @@
+import { API_URLS } from '@/config/api';
 import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
 import {
@@ -83,7 +84,7 @@ const CadastroUsuarioScreen = () => {
 
     try {
 
-      const response = await fetch('http://10.10.1.113:8080/api/v1/usuarios', {
+      const response = await fetch(API_URLS.USUARIOS.BASE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
