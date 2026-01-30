@@ -21,18 +21,13 @@ public class UsuarioCreateDTO   {
   @JsonProperty("cartaoSus")
   private Long cartaoSus = null;
 
-  /**
-   * Perfil de acesso do usuário
-   */
-
   @JsonProperty("perfil")
   private PerfilEnum perfil;
 
   @JsonProperty("cpf")
   private String cpf = null;
 
-
-  public UsuarioCreateDTO nome(String nome) { 
+  public UsuarioCreateDTO nome(String nome) {
 
     this.nome = nome;
     return this;
