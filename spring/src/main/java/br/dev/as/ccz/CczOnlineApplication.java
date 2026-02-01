@@ -9,5 +9,4 @@ public class CczOnlineApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CczOnlineApplication.class, args);
 	}
-
 }

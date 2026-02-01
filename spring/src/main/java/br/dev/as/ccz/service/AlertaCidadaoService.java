@@ -144,4 +144,7 @@ public class AlertaCidadaoService {
 
         return dto;
     }
+
+    public List<AlertaCidadaoDTO> buscarPorUsuario(Long usuarioId) {
+    }
 }

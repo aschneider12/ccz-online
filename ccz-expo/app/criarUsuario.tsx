@@ -147,6 +147,7 @@ const CadastroUsuarioScreen = () => {
   };
 
   return (
+    
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
@@ -165,7 +166,7 @@ const CadastroUsuarioScreen = () => {
         <View style={styles.form}>
           {/* Campo Nome */}
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Nome Completo *</Text>
+            <Text style={styles.label}>Nome completo *</Text>
             <TextInput
               style={[styles.input, errors.nome && styles.inputError]}
               placeholder="Digite seu nome completo"

@@ -4,6 +4,7 @@ import br.dev.as.ccz.api.dto.AlertaCidadaoDTO;
 import br.dev.as.ccz.service.AlertaCidadaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/alertas-cidadao")
+@RequestMapping("/api/v1/alertas-cidadao")
 @Tag(
         name = "Alertas do Cidadão",
         description = "Endpoints responsáveis pelo gerenciamento de alertas cadastrados por cidadãos"
@@ -69,6 +70,40 @@ public class AlertaCidadaoController {
 
         return ResponseEntity.ok(alertaCidadaoService.buscarPorId(id));
     }
+
+    @Operation(
+            summary = "Buscar solicitações por usuário",
+            description = "Retorna a lista de solicitações associadas ao ID do usuário"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Solicitações encontradas",
+                    content = @Content(
+                            array = @ArraySchema(
+                                    schema = @Schema(implementation = AlertaCidadaoDTO.class)
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Nenhuma solicitação encontrada para o usuário",
+                    content = @Content
+            )
+    })
+    @GetMapping
+    public ResponseEntity<List<AlertaCidadaoDTO>> buscarPorUsuario(
+            @Parameter(
+                    description = "ID do usuário",
+                    example = "123"
+            )
+            @RequestParam Long usuarioId
+    ) {
+        return ResponseEntity.ok(
+                alertaCidadaoService.buscarPorUsuario(usuarioId)
+        );
+    }
+
 
     @Operation(
             summary = "Listar alertas do cidadão",

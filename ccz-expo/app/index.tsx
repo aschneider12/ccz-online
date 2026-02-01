@@ -1,16 +1,20 @@
+import { showAlert } from '@/components/alert/AlertService';
 import SharedButton from '@/components/SharedButton';
 import { API_URLS } from '@/config/api';
 import { useUser } from '@/context/context';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
+import { StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function IndexScreen() {
 
   const context = useUser();
       
   const router = useRouter();
+
   const [cpf, setCpf] = useState('111.111.111-11');
+
+   const [alertVisible, setAlertVisible] = useState(false);
 
   const formatCPF = (text) => {
     const cleaned = text.replace(/\D/g, '');
@@ -27,7 +31,7 @@ export default function IndexScreen() {
   };
 
   const handleGovBrLogin = () => {
-    console.log('Login via GOV.BR');
+    showAlert("Ainda não foi implementada a integração!", 'Atenção', 'alert');
   };
 
   const handleCriarUsuario = () => {
@@ -37,7 +41,6 @@ export default function IndexScreen() {
   const handleDirectLogin = async () => {
     try {
       
-      console.log('fazendo request')
       const response = await fetch(API_URLS.AUTH.LOGIN,
         {
           method: "POST",
@@ -51,8 +54,9 @@ export default function IndexScreen() {
       );
   
       const text = await response.text(); 
-        
+  
       if (!response.ok) {
+        console.log('resposta nao ok')
         throw new Error(text);
       } 
 
@@ -64,15 +68,19 @@ export default function IndexScreen() {
       // redireciona para nova tela
     
     } catch (error: any) {
-      Alert.alert("Erro no login", error.message);
+      
+      showAlert("Problema no login", "Contate o suporte, back parado!", 'alert');
+      
     }
   };
 
   return (
 
-    <View style={styles.container}>
+    <View style={styles.container} >
     <StatusBar barStyle="light-content" />
-    
+
+    <Stack.Screen options={{ title: 'CCZ Online' }} />
+
     <View style={styles.card}>
       <Text style={styles.title}>CCZ Online</Text>
       
@@ -92,7 +100,9 @@ export default function IndexScreen() {
       <SharedButton title='Login via GOV.BR' onPress={handleGovBrLogin}></SharedButton>
 
     </View>
-      <SharedButton title='Criar usuário' onPress={handleCriarUsuario}></SharedButton>
+
+    <SharedButton title='Criar usuário' onPress={handleCriarUsuario}></SharedButton>
+
   </View>
   );
 }

@@ -10,13 +10,12 @@ export default function Home() {
   
     const router = useRouter();
  
-    
     const { user } = useUser(); 
   //const token = authContext.currentUser?.getIdTokenResult();
   //token?.then( (authObject) => {
    // console.log(authObject.token)
  // })
- 
+
   
   return (
 
@@ -27,7 +26,14 @@ export default function Home() {
       <SharedButton
           title="Solicitar auxílio"
           onPress={() => router.push("/cadastroSolicitacao")}
-          style={{ backgroundColor: 'blue' }}
+          style={{ backgroundColor: '#007AFF' }}
+          textStyle={{ fontSize: 20 }}
+        />
+
+        <SharedButton
+          title="Minhas solicitações"
+          onPress={() => router.push("/minhasSolicitacoes")}
+          style={{ backgroundColor: '#E74C3C' }}
           textStyle={{ fontSize: 20 }}
         />
 
