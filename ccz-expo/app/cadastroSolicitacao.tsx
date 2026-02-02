@@ -277,6 +277,11 @@ const CadastroAlertaCidadaoScreen = () => {
         </View>
 
         <View style={styles.form}>
+            <View style={styles.inputGroup}>
+            <Text style={styles.label}>Solicitante: {user?.nome}</Text>
+   
+          </View>
+
           {/* Descrição */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Descrição *</Text>
@@ -496,7 +501,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginBottom: 24,
-    marginTop: 20,
+    marginTop: 20,    
   },
   title: {
     fontSize: 28,
@@ -517,7 +522,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 5
   },
   inputGroup: {
     marginBottom: 20,

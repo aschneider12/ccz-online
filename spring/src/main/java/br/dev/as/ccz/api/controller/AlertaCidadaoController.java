@@ -72,8 +72,8 @@ public class AlertaCidadaoController {
     }
 
     @Operation(
-            summary = "Buscar solicitações por usuário",
-            description = "Retorna a lista de solicitações associadas ao ID do usuário"
+            summary = "Buscar solicitações",
+            description = "Retorna a lista de solicitações"
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -87,7 +87,7 @@ public class AlertaCidadaoController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Nenhuma solicitação encontrada para o usuário",
+                    description = "Nenhuma solicitação encontrada para os filtros",
                     content = @Content
             )
     })
@@ -100,25 +100,8 @@ public class AlertaCidadaoController {
             @RequestParam Long usuarioId
     ) {
         return ResponseEntity.ok(
-                alertaCidadaoService.buscarPorUsuario(usuarioId)
+                alertaCidadaoService.buscarAlertas(usuarioId)
         );
-    }
-
-
-    @Operation(
-            summary = "Listar alertas do cidadão",
-            description = "Retorna todos os alertas cadastrados"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Lista de alertas retornada com sucesso",
-                    content = @Content(schema = @Schema(implementation = AlertaCidadaoDTO.class))
-            )
-    })
-    @GetMapping
-    public ResponseEntity<List<AlertaCidadaoDTO>> listar() {
-        return ResponseEntity.ok(alertaCidadaoService.listar());
     }
 
     @Operation(

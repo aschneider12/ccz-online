@@ -1,3 +1,4 @@
+import { HeaderMenu } from '@/components/HeaderMenu';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from "expo-router";
 
@@ -5,12 +6,12 @@ export default function TabsLayout() {
   return (
 
     <Tabs
-
-      screenOptions={{
+  
+      screenOptions={{ 
         tabBarActiveTintColor: '#3498DB',
         tabBarInactiveTintColor: '#95A5A6',
-      }}
-  >
+         headerRight: () => <HeaderMenu />,
+      }} >
       <Tabs.Screen 
         name="home" 
         options={{ 

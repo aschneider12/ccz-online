@@ -60,13 +60,7 @@ public class AlertaCidadaoService {
                         new EntityNotFoundException("Alerta não encontrado"));
     }
 
-    @Transactional(readOnly = true)
-    public List<AlertaCidadaoDTO> listar() {
-        return alertaRepository.findAll()
-                .stream()
-                .map(this::mapearEntityParaDto)
-                .collect(Collectors.toList());
-    }
+
 
     @Transactional
     public AlertaCidadaoDTO atualizar(Long id, AlertaCidadaoDTO dto) {
@@ -144,7 +138,21 @@ public class AlertaCidadaoService {
 
         return dto;
     }
+    @Transactional(readOnly = true)
+    public List<AlertaCidadaoDTO> buscarAlertas(Long usuarioId) {
 
-    public List<AlertaCidadaoDTO> buscarPorUsuario(Long usuarioId) {
+        if(usuarioId != null && usuarioId != 0) {
+            return alertaRepository.findAllByUsuarioId(usuarioId)
+                    .stream()
+                    .map(this::mapearEntityParaDto)
+                    .collect(Collectors.toList());
+
+        } else {
+            return alertaRepository.findAll()
+                    .stream()
+                    .map(this::mapearEntityParaDto)
+                    .collect(Collectors.toList());
+        }
+
     }
 }

@@ -1,6 +1,8 @@
+import SharedButton from '@/components/SharedButton';
 import { API_URLS } from '@/config/api';
 import { useUser } from '@/context/context';
 import { IAlertaCidadao } from '@/interfaces/IAlertaCidadao';
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -24,6 +26,7 @@ export default function SolicitacoesScreen() {
 
   async function buscarSolicitacoes() {
     try {
+     
       console.log('buscando solicitacoes')
       const response = await fetch(API_URLS.ALERTA_CIDADAO.BASE+"?usuarioId="+user?.id);
       const data = await response.json();
@@ -55,13 +58,29 @@ export default function SolicitacoesScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={solicitacoes}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={renderItem}
-        contentContainerStyle={{ paddingBottom: 16 }}
-      />
+
+    <View style={styles.container}> 
+        <FlatList
+          data={solicitacoes}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={renderItem}
+          contentContainerStyle={{ paddingBottom: 16 }}
+          ListEmptyComponent={() => (
+            <View>
+
+            <Text style={styles.emptyText}>
+              Você não realizou nenhuma solicitação.
+              </Text>
+                <SharedButton
+                      title="Nova"
+                      onPress={() => router.push("/cadastroSolicitacao")}
+                      style={{ backgroundColor: '#007AFF' }}
+                      textStyle={{ fontSize: 20 }}
+                      />
+            </View>
+            
+          )}
+        />
     </View>
   );
 }
@@ -97,5 +116,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+   emptyText: {
+    fontSize: 16,
+    color: '#999',
   },
 });
