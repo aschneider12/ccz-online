@@ -304,7 +304,7 @@ const CadastroAlertaCidadaoScreen = () => {
 
           {/* Tipo de Notificação */}
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Tipo de Ocorrência *</Text>
+            <Text style={styles.label}>Tipo de ocorrência *</Text>
             <View style={[styles.pickerContainer, errors.tipoNotificacaoId && styles.inputError]}>
               
                <Picker
@@ -329,7 +329,7 @@ const CadastroAlertaCidadaoScreen = () => {
 
           {/* Espécie */}
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Espécie (Opcional)</Text>
+            <Text style={styles.label}>Espécie observada (opcional)</Text>
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={formData.especieId}

@@ -28,7 +28,7 @@ export function HeaderMenu() {
             style={styles.item}
             onPress={() => {
               setOpen(false);
-              router.push('/perfil');
+              router.push('/meuPerfil');
             }}
           >
             <Ionicons name="person-outline" size={18} />

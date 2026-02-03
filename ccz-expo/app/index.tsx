@@ -64,7 +64,7 @@ export default function IndexScreen() {
       console.log("Login OK:", data);
       
       context.setUser(data);
-      router.push("/home");
+      router.replace("/home");
       // redireciona para nova tela
     
     } catch (error: any) {

@@ -6,7 +6,7 @@ export default function RootLayout() {
   return (
     <AlertProvider>
       <UserProvider>
-        <Stack screenOptions={{headerShown: true}}/>
+        <Stack screenOptions={{headerShown: false}}/>
       </UserProvider>
     </AlertProvider>
   );

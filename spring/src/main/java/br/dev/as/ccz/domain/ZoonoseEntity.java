@@ -12,4 +12,7 @@ public class ZoonoseEntity {
 
     @Column(name = "descricao", nullable = false, length = 255)
     private String descricao;
+
+    @Column(name = "notificacao_obrigatoria", nullable = true)
+    private String notificacaoObrigatoria;
 }
