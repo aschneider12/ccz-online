@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -141,6 +144,38 @@ public class UsuarioController {
             @Parameter(description = "CPF do usuário (apenas números)", required = true)
             @PathVariable String cpf) {
         UsuarioDTO usuario = usuarioService.buscarPorCpf(cpf);
+        return ResponseEntity.ok(usuario);
+    }
+
+    @GetMapping("/usuarios/solicitacoes-proximas")
+    @Operation(summary = "Buscar solicitações próximas do usuário",
+            description = "Retorna os alertas próximas ao cidadão ou solicitações próximas ao agente")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Usuário encontrado",
+//                    content = @Content(schema = @Schema(implementation = UsuarioDTO.class))),
+//            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+//            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+//    })
+    public ResponseEntity<UsuarioDTO> buscarSolicitacoesProximasDoUsuario(
+            @PathParam("id") Long id,
+            @PathParam("latitude") String latitude,
+            @PathParam("longitude") String longitude,
+            @PathParam("distancia") Integer distancia) {
+
+        UsuarioDTO usuario = usuarioService.buscarPorId(id);
+        if(usuario.getPerfil().equals("cidadao"))
+            System.out.println("Buscar alertas proximos ao cidadao");
+        else
+            System.out.println("Buscar alertas enviado proximos do agente");
+//<Marker usar o marker como DTO
+//                key={marker.id}
+//        coordinate={{
+//                latitude: marker.latitude,
+//                longitude: marker.longitude,
+//            }}
+//        title={marker.title}
+//        description={marker.description}
+//                />
         return ResponseEntity.ok(usuario);
     }
 }
