@@ -16,7 +16,17 @@ export const API_URLS = {
   ESPECIES: {
     BASE: `${API_BASE_URL}/especies`,
   },
-TIPOS_NOTIFICACAO: {
+  TIPOS_NOTIFICACAO: {
     BASE: `${API_BASE_URL}/tipos-notificacao`,
   },
+  MUNICIPIOS: {
+    BASE: `${API_BASE_URL}/municipios`,
+  },
+  ALERTA_CIDADAO: {
+    BASE: `${API_BASE_URL}/alertas-cidadao`,
+  },
+   ALERTTA_CCZ: {
+    BASE: `${API_BASE_URL}/alertas-ccz`,
+  },
+
 };

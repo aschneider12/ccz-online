@@ -1,17 +1,22 @@
+import { showAlert } from '@/components/alert/AlertService';
 import SharedButton from '@/components/SharedButton';
-import { useRouter } from 'expo-router';
+import { API_URLS } from '@/config/api';
+import { useUser } from '@/context/context';
+import { Stack, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
-import { useUser } from '../context/context';
+import { StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function IndexScreen() {
 
+  const context = useUser();
+      
   const router = useRouter();
+
   const [cpf, setCpf] = useState('111.111.111-11');
 
-  const { setUser } = useUser();
+   const [alertVisible, setAlertVisible] = useState(false);
 
-  const formatCPF = (text: string) => {
+  const formatCPF = (text) => {
     const cleaned = text.replace(/\D/g, '');
     const limited = cleaned.substring(0, 11);
     
@@ -21,12 +26,12 @@ export default function IndexScreen() {
     return `${limited.slice(0, 3)}.${limited.slice(3, 6)}.${limited.slice(6, 9)}-${limited.slice(9)}`;
   };
 
-  const handleCPFChange = (text: string) => {
+  const handleCPFChange = (text) => {
     setCpf(formatCPF(text));
   };
 
   const handleGovBrLogin = () => {
-    console.log('Login via GOV.BR');
+    showAlert("Ainda não foi implementada a integração!", 'Atenção', 'alert');
   };
 
   const handleCriarUsuario = () => {
@@ -36,9 +41,7 @@ export default function IndexScreen() {
   const handleDirectLogin = async () => {
     try {
       
-      console.log('fazendo request')
-      const response = await fetch(
-        "http://127.0.0.1:8080/api/v1/auth/login",
+      const response = await fetch(API_URLS.AUTH.LOGIN,
         {
           method: "POST",
           headers: {
@@ -51,34 +54,33 @@ export default function IndexScreen() {
       );
   
       const text = await response.text(); 
-      console.log("Status:", response.status);
-      console.log("Resposta do backend:", text);
   
       if (!response.ok) {
+        console.log('resposta nao ok')
         throw new Error(text);
-      }
-  
+      } 
+
       const data = JSON.parse(text);
       console.log("Login OK:", data);
-  
-      console.log("Login realizado:", data);
-
-      setUser(data);
       
-  
-      router.push("/home");
+      context.setUser(data);
+      router.replace("/home");
       // redireciona para nova tela
     
     } catch (error: any) {
-      Alert.alert("Erro no login", error.message);
+      
+      showAlert("Problema no login", "Contate o suporte, back parado!", 'alert');
+      
     }
   };
 
   return (
 
-    <View style={styles.container}>
+    <View style={styles.container} >
     <StatusBar barStyle="light-content" />
-    
+
+    <Stack.Screen options={{ title: 'CCZ Online' }} />
+
     <View style={styles.card}>
       <Text style={styles.title}>CCZ Online</Text>
       
@@ -98,7 +100,9 @@ export default function IndexScreen() {
       <SharedButton title='Login via GOV.BR' onPress={handleGovBrLogin}></SharedButton>
 
     </View>
-      <SharedButton title='Criar usuário' onPress={handleCriarUsuario}></SharedButton>
+
+    <SharedButton title='Criar usuário' onPress={handleCriarUsuario}></SharedButton>
+
   </View>
   );
 }

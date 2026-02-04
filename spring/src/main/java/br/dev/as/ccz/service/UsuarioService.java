@@ -141,7 +141,7 @@ public class UsuarioService {
         dto.setId(usuario.getId());
         dto.setNome(usuario.getNome());
         dto.setCartaoSus(usuario.getCartaoSus());
-        dto.setPerfil(Enum.valueOf(PerfilEnum.class, usuario.getPerfil()));
+        dto.setPerfil(PerfilEnum.valueOf(usuario.getPerfil()));
         dto.setCpf(usuario.getCpf());
         return dto;
     }

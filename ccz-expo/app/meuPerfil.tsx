@@ -1,5 +1,7 @@
 import { API_URLS } from '@/config/api';
+import { useUser } from '@/context/context';
 import { Picker } from '@react-native-picker/picker';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -15,15 +17,16 @@ import {
 } from 'react-native';
 
 
+const MeuPerfilScreen = () => {
 
-const CadastroUsuarioScreen = () => {
-
+  const { user } = useUser(); 
 
   const [formData, setFormData] = useState({
-    nome: '',
-    cpf: '',
-    cartaoSus: '',
-    perfil: 'CIDADAO'
+    id: user?.id,
+    nome: user?.nome,
+    cpf: user?.cpf,
+    cartaoSus: user?.cartaoSus,
+    perfil: user?.perfil
   });
   
   const [loading, setLoading] = useState(false);
@@ -136,15 +139,6 @@ const CadastroUsuarioScreen = () => {
 
   };
 
-  const limparFormulario = () => {
-    setFormData({
-      nome: '',
-      cpf: '',
-      cartaoSus: '',
-      perfil: 'CIDADAO'
-    });
-    setErrors({});
-  };
 
   return (
     
@@ -157,7 +151,7 @@ const CadastroUsuarioScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>Cadastro de Usuário</Text>
+          <Text style={styles.title}>Meu usuário</Text>
           <Text style={styles.subtitle}>
             Sistema de Controle de Zoonoses
           </Text>
@@ -248,16 +242,16 @@ const CadastroUsuarioScreen = () => {
               {loading ? (
                 <ActivityIndicator color="#FFF" />
               ) : (
-                <Text style={styles.buttonText}>Cadastrar</Text>
+                <Text style={styles.buttonText}>Atualizar</Text>
               )}
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.button, styles.buttonSecondary]}
-              onPress={limparFormulario}
+              onPress={ () => router.push("/home")}
               disabled={loading}
             >
-              <Text style={styles.buttonTextSecondary}>Limpar</Text>
+              <Text style={styles.buttonTextSecondary}>Voltar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -373,4 +367,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CadastroUsuarioScreen;
+export default MeuPerfilScreen;

@@ -15,7 +15,7 @@ public class AlertaCczEntity {
     @Column(name = "titulo", nullable = false, length = 25)
     private String titulo;
 
-    @Column(name = "descricao", nullable = false, unique = true, length = 255)
+    @Column(name = "descricao", nullable = false, length = 255)
     private String descricao;
 
     @Column(name = "endereco", length = 255)

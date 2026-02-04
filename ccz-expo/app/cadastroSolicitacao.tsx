@@ -1,3 +1,6 @@
+import { showAlert } from '@/components/alert/AlertService';
+import { API_URLS } from '@/config/api';
+import { useUser } from '@/context/context';
 import { IAlertaCidadao } from '@/interfaces/IAlertaCidadao';
 import { IEspecie } from '@/interfaces/IEspecie';
 import { IMunicipio } from '@/interfaces/IMunicipio';
@@ -6,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import * as Location from 'expo-location';
+import { Stack } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -22,13 +26,16 @@ import {
 } from 'react-native';
 
 const CadastroAlertaCidadaoScreen = () => {
+
+  const { user } = useUser(); 
+
   const [formData, setFormData] = useState<IAlertaCidadao>({
     descricao: '',
     endereco: '',
     municipioId: '',
     tipoNotificacaoId: '',
     especieId: '',
-    usuarioId: 1, // ID do usuário logado
+    usuarioId: user?.id, 
     coordLatitude: '',
     coordLongitude: '',
     data: new Date(),
@@ -56,28 +63,33 @@ const CadastroAlertaCidadaoScreen = () => {
   }, []);
 
   const carregarMunicipios = async () => {
-    /*try {
+    try {
+
       // Substitua pela chamada real à sua API
-      const response = await fetch('http://10.10.1.113:8080/api/v1/municipios');
+      const response = await fetch(API_URLS.MUNICIPIOS.BASE);
       const data = await response.json();
       setMunicipios(data);
+
     } catch (error) {
-      console.error('Erro ao carregar municípios:', error);
+      showAlert("Problema request", 'Erro ao carregar municípios:', 'error');
       // Dados mockados para exemplo*/
       setMunicipios([
         { id: 1, descricao: 'Campo Grande', uf: 'MS' },
         { id: 2, descricao: 'Dourados', uf: 'MS' },
         { id: 3, descricao: 'Três Lagoas', uf: 'MS' },
       ]);
-    //}
+    }
   };
 
   const carregarTiposNotificacao = async () => {
-   /* try {
-      const response = await fetch('http://10.10.1.113:8080/api/v1/tipos-notificacao');
+    try {
+
+      const response = await fetch(API_URLS.TIPOS_NOTIFICACAO.BASE);
       const data = await response.json();
       setTiposNotificacao(data);
+      
     } catch (error) {
+
       console.error('Erro ao carregar tipos de notificação:', error);
       // Dados mockados*/
       setTiposNotificacao([
@@ -86,14 +98,20 @@ const CadastroAlertaCidadaoScreen = () => {
         { id: 3, descricao: 'Rato - Média', urgencia: 1 },
       ]);
     
+    }
   };
 
   const carregarEspecies = async () => {
-  /*  try {
-      const response = await fetch('http://10.10.1.113:8080/api/v1/especies');
+    try {
+
+      const response = await fetch(API_URLS.ESPECIES.BASE);
       const data = await response.json();
       setEspecies(data);
+
     } catch (error) {
+      
+      showAlert("Dados das espécies não carregados", "Atenção", 'alert')
+
       console.error('Erro ao carregar espécies:', error);
       // Dados mockados*/
       setEspecies([
@@ -101,7 +119,7 @@ const CadastroAlertaCidadaoScreen = () => {
         { id: 2, descricao: 'Rattus norvegicus (Rato de esgoto)' },
         { id: 3, descricao: 'Tityus serrulatus (Escorpião amarelo)' },
       ]);
-    //}
+    }
   };
 
   // Obter localização atual
@@ -109,9 +127,10 @@ const CadastroAlertaCidadaoScreen = () => {
     setLoadingLocation(true);
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      
+     
       if (status !== 'granted') {
-        Alert.alert('Permissão Negada', 'Permissão para acessar localização foi negada');
+        
+        showAlert('Permissão para acessar localização foi negada','Permissão Negada','alert');
         setLoadingLocation(false);
         return;
       }
@@ -127,10 +146,13 @@ const CadastroAlertaCidadaoScreen = () => {
       });
 
       Alert.alert('Sucesso', 'Localização obtida com sucesso!');
+
     } catch (error) {
       console.error('Erro ao obter localização:', error);
       Alert.alert('Erro', 'Não foi possível obter a localização');
+
     } finally {
+
       setLoadingLocation(false);
     }
   };
@@ -160,7 +182,7 @@ const CadastroAlertaCidadaoScreen = () => {
   // Cadastrar alerta
   const cadastrarAlerta = async () => {
     if (!validarFormulario()) {
-      Alert.alert('Erro de Validação', 'Por favor, corrija os erros no formulário');
+      showAlert('Por favor, verifique os erros no formulário', 'Atenção', 'alert');
       return;
     }
 
@@ -179,7 +201,7 @@ const CadastroAlertaCidadaoScreen = () => {
         data: formData.data.toISOString(),
       };
 
-      const response = await fetch('http://10.10.1.113:8080/api/v1/alertas-cidadao', {
+      const response = await fetch(API_URLS.ALERTA_CIDADAO.BASE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -189,30 +211,25 @@ const CadastroAlertaCidadaoScreen = () => {
 
       const data = await response.json();
 
+      console.log('resposta do cadastro', response);
+      console.log('dados da resposta', data);
       if (response.ok) {
-        Alert.alert(
-          'Sucesso!',
-          'Alerta cadastrado com sucesso',
-          [
-            {
-              text: 'OK',
-              onPress: () => limparFormulario()
-            }
-          ]
-        );
+        
+        showAlert("Sucesso!", 'Alerta cadastrado com sucesso','success');
+          
       } else {
         let mensagemErro = 'Erro ao cadastrar alerta';
         if (data.message) {
           mensagemErro = data.message;
         }
-        Alert.alert('Erro', mensagemErro);
+        showAlert("Erro cadastro",mensagemErro,'alert');
       }
+
     } catch (error) {
+      
       console.error('Erro:', error);
-      Alert.alert(
-        'Erro de Conexão',
-        'Não foi possível conectar ao servidor'
-      );
+      showAlert("Erro conexão",'Não foi possível conectar ao servidor','error');
+      
     } finally {
       setLoading(false);
     }
@@ -242,6 +259,8 @@ const CadastroAlertaCidadaoScreen = () => {
   };
 
   return (
+
+    
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
@@ -251,12 +270,18 @@ const CadastroAlertaCidadaoScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
+          <Stack.Screen options={{ title: 'voltar' }} />
           <Ionicons name="alert-circle" size={40} color="#E74C3C" />
-          <Text style={styles.title}>Novo Alerta</Text>
-          <Text style={styles.subtitle}>Reporte ocorrências de zoonoses</Text>
+          <Text style={styles.title}>Cadastrar alerta</Text>
+          <Text style={styles.subtitle}>Reporte ocorrências de zoonoses nas região</Text>
         </View>
 
         <View style={styles.form}>
+            <View style={styles.inputGroup}>
+            <Text style={styles.label}>Solicitante: {user?.nome}</Text>
+   
+          </View>
+
           {/* Descrição */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Descrição *</Text>
@@ -279,7 +304,7 @@ const CadastroAlertaCidadaoScreen = () => {
 
           {/* Tipo de Notificação */}
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Tipo de Ocorrência *</Text>
+            <Text style={styles.label}>Tipo de ocorrência *</Text>
             <View style={[styles.pickerContainer, errors.tipoNotificacaoId && styles.inputError]}>
               
                <Picker
@@ -304,7 +329,7 @@ const CadastroAlertaCidadaoScreen = () => {
 
           {/* Espécie */}
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Espécie (Opcional)</Text>
+            <Text style={styles.label}>Espécie observada (opcional)</Text>
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={formData.especieId}
@@ -444,7 +469,7 @@ const CadastroAlertaCidadaoScreen = () => {
               ) : (
                 <>
                   <Ionicons name="send" size={20} color="#FFF" />
-                  <Text style={styles.buttonText}>Enviar Alerta</Text>
+                  <Text style={styles.buttonText}>Enviar alerta</Text>
                 </>
               )}
             </TouchableOpacity>
@@ -476,7 +501,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginBottom: 24,
-    marginTop: 20,
+    marginTop: 20,    
   },
   title: {
     fontSize: 28,
@@ -497,7 +522,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 5
   },
   inputGroup: {
     marginBottom: 20,

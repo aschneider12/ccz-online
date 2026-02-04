@@ -1,6 +1,5 @@
 package br.dev.as.ccz.api.dto;
 
-import br.dev.as.ccz.enums.PerfilEnum;
 import com.fasterxml.jackson.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
@@ -22,10 +21,46 @@ public class UsuarioUpdateDTO   {
   @JsonSetter(nulls = Nulls.FAIL)    // FAIL setting if the value is null
   private Long cartaoSus = null;
 
+  /**
+   * Perfil de acesso do usuário
+   */
+  public enum PerfilEnum {
+    ADMIN("ADMIN"),
+    
+    AGENTE("AGENTE"),
+    
+    CIDADAO("CIDADAO"),
+    
+    CCZ("CCZ");
+
+    private String value;
+
+    PerfilEnum(String value) {
+      this.value = value;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static PerfilEnum fromValue(String text) {
+      for (PerfilEnum b : PerfilEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
   @JsonProperty("perfil")
+
   @JsonInclude(JsonInclude.Include.NON_ABSENT)  // Exclude from JSON if absent
   @JsonSetter(nulls = Nulls.FAIL)    // FAIL setting if the value is null
   private PerfilEnum perfil = null;
+
 
   public UsuarioUpdateDTO nome(String nome) { 
 
