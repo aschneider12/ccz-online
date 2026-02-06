@@ -1,9 +1,13 @@
 package br.dev.as.ccz.repository;
 
+import br.dev.as.ccz.domain.AlertaCidadaoEntity;
 import br.dev.as.ccz.domain.UsuarioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -31,4 +35,16 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
      * @return true se existir outro usuário com o mesmo CPF, false caso contrário
      */
     boolean existsByCpfAndIdNot(String cpf, Long id);
+
+
+    @Query(
+            value = "SELECT * FROM alerta_cidadao WHERE ST_DWithin(location, ST_MakePoint(:lng, :lat)::geography, :radius)",
+            nativeQuery = true
+    )
+    List<AlertaCidadaoEntity> findNearby(
+            @Param("lat") double latitude,
+            @Param("lng") double longitude,
+            @Param("radius") double radiusInMeters
+    );
+
 }

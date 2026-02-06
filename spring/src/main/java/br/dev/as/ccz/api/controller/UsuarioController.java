@@ -1,9 +1,6 @@
 package br.dev.as.ccz.api.controller;
 
-import br.dev.as.ccz.api.dto.LoginRequest;
-import br.dev.as.ccz.api.dto.UsuarioCreateDTO;
-import br.dev.as.ccz.api.dto.UsuarioDTO;
-import br.dev.as.ccz.api.dto.UsuarioUpdateDTO;
+import br.dev.as.ccz.api.dto.*;
 import br.dev.as.ccz.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,6 +18,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
@@ -156,14 +155,15 @@ public class UsuarioController {
 //            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
 //            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 //    })
-    public ResponseEntity<UsuarioDTO> buscarSolicitacoesProximasDoUsuario(
-            @PathParam("id") Long id,
+    public ResponseEntity<List<MarkerDTO>> buscarSolicitacoesProximasDoUsuario(
+            @PathParam("id") Long idUsuario,
             @PathParam("latitude") String latitude,
             @PathParam("longitude") String longitude,
             @PathParam("distancia") Integer distancia) {
 
-        UsuarioDTO usuario = usuarioService.buscarPorId(id);
+        UsuarioDTO usuario = usuarioService.buscarPorId(idUsuario);
         if(usuario.getPerfil().equals("cidadao"))
+
             System.out.println("Buscar alertas proximos ao cidadao");
         else
             System.out.println("Buscar alertas enviado proximos do agente");
@@ -176,6 +176,6 @@ public class UsuarioController {
 //        title={marker.title}
 //        description={marker.description}
 //                />
-        return ResponseEntity.ok(usuario);
+        return ResponseEntity.ok(null);
     }
 }

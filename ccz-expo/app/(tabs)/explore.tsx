@@ -2,27 +2,83 @@ import { showAlert } from '@/components/alert/AlertService';
 import MapNative from '@/components/MapNative';
 import { API_URLS } from '@/config/api';
 import { useUser } from '@/context/context';
+import * as Location from 'expo-location';
 
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+type MarkerType = {
+  id: string;
+  latitude: number;
+  longitude: number;
+  title?: string;
+  description?: string;
+};
+
 const Explore = () => {
+  
+  const [loading, setLoading] = useState(true);
 
   const { user } = useUser(); 
 
+  const [markers, setMarkers] = useState([]);
+
   useEffect(() => {
+
+    (async () => {
+
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== 'granted') {
+        console.log('Permissão negada');
+        setLoading(false);
+        return;
+      }
+      // 2. Pegar localização atual
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
+
+       const { latitude, longitude } = location.coords;
+
+       setLoading(false);
+
+      //   setMarkers([{
+      //     id: 'current',
+      //     latitude,
+      //     longitude,
+      //     title: 'Você está aqui',
+      //     description: 'Localização atual',
+      //   },
+      // ]);
+
+     })();
+  
+
     buscarSolicitacoesProximas();
   }, []);
 
   const buscarSolicitacoesProximas = async () => {
       try {
-  
-        // Substitua pela chamada real à sua API
-        const response = await fetch(API_URLS.USUARIOS.SOLICITACOES_PROXIMAS, 
 
-        );
-        const data = await response.json();
-        setMunicipios(data);
+        const params = new URLSearchParams({
+          userId: user?.id?.toString() ?? '',
+        }).toString();
+
+        // Substitua pela chamada real à sua API
+        const response = await fetch(`${API_URLS.USUARIOS.SOLICITACOES_PROXIMAS}?${params}`);
+
+        if(response.ok) {
+          const data = await response.json();
+
+          console.log(data)
+        } else {
+          console.log('status response', response.status)
+          console.log('response completa', response)
+        }
+
+        
+        // setMarkers(data);
   
       } catch (error) {
 
@@ -46,17 +102,6 @@ const Explore = () => {
     // setRegion(newRegion);
     console.log('Região alterada:', newRegion);
   };
-
-  // Exemplo de marcadores (opcional)
-  const markers = [
-    {
-      id: '1',
-      latitude: -22.2232,
-      longitude: -54.8086,
-      title: 'Dourados, MS',
-      description: 'Sua localização atual aqui',
-    },
-  ];
 
   return (
     <View style={styles.container}>

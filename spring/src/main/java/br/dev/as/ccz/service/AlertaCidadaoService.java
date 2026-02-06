@@ -57,7 +57,7 @@ public class AlertaCidadaoService {
         return alertaRepository.findById(id)
                 .map(this::mapearEntityParaDto)
                 .orElseThrow(() ->
-                        new EntityNotFoundException("Alerta não encontrado"));
+                        new EntityNotFoundException("Alerta cidadão não encontrado"));
     }
 
 
@@ -67,7 +67,7 @@ public class AlertaCidadaoService {
 
         AlertaCidadaoEntity entity = alertaRepository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException("Alerta não encontrado"));
+                        new EntityNotFoundException("Alerta cidadão não encontrado"));
 
         mapearDtoParaEntity(dto, entity);
 
@@ -77,7 +77,7 @@ public class AlertaCidadaoService {
     @Transactional
     public void excluir(Long id) {
         if (!alertaRepository.existsById(id)) {
-            throw new EntityNotFoundException("Alerta não encontrado");
+            throw new EntityNotFoundException("Alerta cidadão não encontrado");
         }
         alertaRepository.deleteById(id);
     }

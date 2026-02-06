@@ -47,6 +47,7 @@ public class EspecieService {
 
     @Transactional
     public boolean excluir(Long id) {
+
         if (repository.existsById(id)) {
             repository.deleteById(id);
             return true;
