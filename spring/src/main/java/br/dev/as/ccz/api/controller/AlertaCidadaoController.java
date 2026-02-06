@@ -63,6 +63,7 @@ public class AlertaCidadaoController {
             ),
             @ApiResponse(responseCode = "404", description = "Alerta não encontrado", content = @Content)
     })
+
     @GetMapping("/{id}")
     public ResponseEntity<AlertaCidadaoDTO> buscarPorId(
             @Parameter(description = "ID do alerta", example = "10")

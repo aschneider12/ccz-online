@@ -33,13 +33,13 @@ public class AlertaCczCreateDTO {
     @Schema(description = "Data e hora do alerta", example = "2026-01-26T14:30:00")
     private LocalDateTime data;
 
-    @NotNull(message = "Latitude é obrigatória")
-    @Schema(description = "Coordenada de latitude", example = "-20.4486")
-    private BigDecimal coordLatitude;
-
     @NotNull(message = "Longitude é obrigatória")
     @Schema(description = "Coordenada de longitude", example = "-54.6295")
     private BigDecimal coordLongitude;
+
+    @NotNull(message = "Latitude é obrigatória")
+    @Schema(description = "Coordenada de latitude", example = "-20.4486")
+    private BigDecimal coordLatitude;
 
     @NotNull(message = "Tipo de notificação é obrigatório")
     @Schema(description = "ID do tipo de notificação", example = "1")

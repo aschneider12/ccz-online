@@ -26,11 +26,11 @@ public class AlertaCczDTO {
     @Schema(description = "Data e hora do alerta", example = "2026-01-26T14:30:00")
     private LocalDateTime data;
 
-    @Schema(description = "Coordenada de latitude", example = "-20.4486")
-    private BigDecimal coordLatitude;
-
     @Schema(description = "Coordenada de longitude", example = "-54.6295")
     private BigDecimal coordLongitude;
+
+    @Schema(description = "Coordenada de latitude", example = "-20.4486")
+    private BigDecimal coordLatitude;
 
     @Schema(description = "Tipo de notificação")
     private Long tipoNotificacaoId;
