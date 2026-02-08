@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://ep-flat-breeze-ah1gdy1p-pooler.c-3.us-east-1.aws.neon.tech/task-db?sslmode=require&channel_binding=require
     username: neondb_owner
-    password: npg_43hFLQNocPOD
+    password: npg_KI8QFDSm6XwW
     driver-class-name: org.postgresql.Driver
   hikari:
     maximum-pool-size: 5
@@ -21,7 +21,7 @@ spring:
         hibernate:
           format_sql: true
           show-sql: true
-          database-platform: org.hibernate.dialect.PostgreSQLDialect
+          dialect: org.hibernate.dialect.PostgreSQLDialect
 
   management:
     endpoints:

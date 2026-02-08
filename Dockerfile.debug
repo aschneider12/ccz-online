@@ -1,0 +1,15 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY ccz-expo/package.json package-lock.json* yarn.lock* ./
+
+RUN npm install
+
+COPY . .
+
+RUN npx expo export --platform web
+
+RUN echo "=== Conteúdo de /app ===" && ls -la /app && echo "=== Procurando build ===" && find /app -maxdepth 3 -type d | grep -E "(dist|build|expo)" || echo "Nenhuma pasta encontrada"
+
+CMD ["sh"]
