@@ -1,5 +1,6 @@
 package br.dev.as.ccz.repository;
 
+import br.dev.as.ccz.api.dto.MarkerDTO;
 import br.dev.as.ccz.domain.AlertaCczEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,30 @@ import java.util.List;
 
 @Repository
 public interface AlertaCczRepository extends JpaRepository<AlertaCczEntity, Long> {
+
+    @Query(value = """
+        SELECT  
+            a.id,
+            t.descricao,
+            a.descricao,
+            ST_Y(a.location_alert::geometry),
+            ST_X(a.location_alert::geometry) 
+        FROM alerta_cidadao a 
+        LEFT JOIN tipo_notificacao t ON t.id = a.tipo_notificacao_id 
+        WHERE ST_DWithin(
+            a.location_alert,
+            ST_SetSRID(
+                ST_MakePoint(:longitude, :latitude),
+                4326
+            )::geography, :distancia
+        )
+    """, nativeQuery = true
+    )
+    List<MarkerDTO> findAllAlertasRegiao(
+            @Param("latitude") Double latitude,
+            @Param("longitude") Double longitude,
+            @Param("distancia") Integer distancia
+    );
 
     /**
      * Busca alertas por município

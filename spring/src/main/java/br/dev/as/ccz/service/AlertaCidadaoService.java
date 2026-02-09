@@ -1,6 +1,7 @@
 package br.dev.as.ccz.service;
 
 import br.dev.as.ccz.api.dto.AlertaCidadaoDTO;
+import br.dev.as.ccz.api.dto.MarkerDTO;
 import br.dev.as.ccz.domain.AlertaCidadaoEntity;
 import br.dev.as.ccz.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class AlertaCidadaoService {
 
-    private final AlertaCidadaoRepository alertaRepository;
+    private final AlertaCidadaoRepository alertaCidadaoRepository;
     private final MunicipioRepository municipioRepository;
     private final UsuarioRepository usuarioRepository;
     private final TipoNotificacaoRepository tipoNotificacaoRepository;
@@ -27,7 +28,7 @@ public class AlertaCidadaoService {
             TipoNotificacaoRepository tipoNotificacaoRepository,
             EspecieRepository especieRepository) {
 
-        this.alertaRepository = alertaRepository;
+        this.alertaCidadaoRepository = alertaRepository;
         this.municipioRepository = municipioRepository;
         this.usuarioRepository = usuarioRepository;
         this.tipoNotificacaoRepository = tipoNotificacaoRepository;
@@ -48,13 +49,13 @@ public class AlertaCidadaoService {
                 dto.getData() != null ? dto.getData() : LocalDateTime.now()
         );
 
-        AlertaCidadaoEntity salvo = alertaRepository.save(entity);
+        AlertaCidadaoEntity salvo = alertaCidadaoRepository.save(entity);
         return mapearEntityParaDto(salvo);
     }
 
     @Transactional(readOnly = true)
     public AlertaCidadaoDTO buscarPorId(Long id) {
-        return alertaRepository.findById(id)
+        return alertaCidadaoRepository.findById(id)
                 .map(this::mapearEntityParaDto)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Alerta cidadão não encontrado"));
@@ -65,21 +66,21 @@ public class AlertaCidadaoService {
     @Transactional
     public AlertaCidadaoDTO atualizar(Long id, AlertaCidadaoDTO dto) {
 
-        AlertaCidadaoEntity entity = alertaRepository.findById(id)
+        AlertaCidadaoEntity entity = alertaCidadaoRepository.findById(id)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Alerta cidadão não encontrado"));
 
         mapearDtoParaEntity(dto, entity);
 
-        return mapearEntityParaDto(alertaRepository.save(entity));
+        return mapearEntityParaDto(alertaCidadaoRepository.save(entity));
     }
 
     @Transactional
     public void excluir(Long id) {
-        if (!alertaRepository.existsById(id)) {
+        if (!alertaCidadaoRepository.existsById(id)) {
             throw new EntityNotFoundException("Alerta cidadão não encontrado");
         }
-        alertaRepository.deleteById(id);
+        alertaCidadaoRepository.deleteById(id);
     }
 
     /* ==========================
@@ -142,17 +143,21 @@ public class AlertaCidadaoService {
     public List<AlertaCidadaoDTO> buscarAlertas(Long usuarioId) {
 
         if(usuarioId != null && usuarioId != 0) {
-            return alertaRepository.findAllByUsuarioId(usuarioId)
+            return alertaCidadaoRepository.findAllByUsuarioId(usuarioId)
                     .stream()
                     .map(this::mapearEntityParaDto)
                     .collect(Collectors.toList());
 
         } else {
-            return alertaRepository.findAll()
+            return alertaCidadaoRepository.findAll()
                     .stream()
                     .map(this::mapearEntityParaDto)
                     .collect(Collectors.toList());
         }
+    }
 
+    public List<MarkerDTO> buscarAlertasRegiao(Double latitude, Double longitude, Integer distancia) {
+
+        return alertaCidadaoRepository.findAllAlertasRegiao(latitude, longitude, distancia);
     }
 }

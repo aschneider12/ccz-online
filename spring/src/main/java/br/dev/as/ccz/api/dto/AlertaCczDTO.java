@@ -27,10 +27,10 @@ public class AlertaCczDTO {
     private LocalDateTime data;
 
     @Schema(description = "Coordenada de longitude", example = "-54.6295")
-    private BigDecimal coordLongitude;
+    private Double coordLongitude;
 
     @Schema(description = "Coordenada de latitude", example = "-20.4486")
-    private BigDecimal coordLatitude;
+    private Double coordLatitude;
 
     @Schema(description = "Tipo de notificação")
     private Long tipoNotificacaoId;
@@ -82,20 +82,20 @@ public class AlertaCczDTO {
         this.data = data;
     }
 
-    public BigDecimal getCoordLatitude() {
-        return coordLatitude;
-    }
-
-    public void setCoordLatitude(BigDecimal coordLatitude) {
-        this.coordLatitude = coordLatitude;
-    }
-
-    public BigDecimal getCoordLongitude() {
+    public Double getCoordLongitude() {
         return coordLongitude;
     }
 
-    public void setCoordLongitude(BigDecimal coordLongitude) {
+    public void setCoordLongitude(Double coordLongitude) {
         this.coordLongitude = coordLongitude;
+    }
+
+    public Double getCoordLatitude() {
+        return coordLatitude;
+    }
+
+    public void setCoordLatitude(Double coordLatitude) {
+        this.coordLatitude = coordLatitude;
     }
 
     public Long getMunicipioId() {

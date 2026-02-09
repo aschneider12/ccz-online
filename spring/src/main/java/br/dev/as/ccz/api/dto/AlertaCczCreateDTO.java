@@ -35,11 +35,11 @@ public class AlertaCczCreateDTO {
 
     @NotNull(message = "Longitude é obrigatória")
     @Schema(description = "Coordenada de longitude", example = "-54.6295")
-    private BigDecimal coordLongitude;
+    private Double coordLongitude;
 
     @NotNull(message = "Latitude é obrigatória")
     @Schema(description = "Coordenada de latitude", example = "-20.4486")
-    private BigDecimal coordLatitude;
+    private Double coordLatitude;
 
     @NotNull(message = "Tipo de notificação é obrigatório")
     @Schema(description = "ID do tipo de notificação", example = "1")
@@ -93,20 +93,20 @@ public class AlertaCczCreateDTO {
         this.data = data;
     }
 
-    public BigDecimal getCoordLatitude() {
-        return coordLatitude;
-    }
-
-    public void setCoordLatitude(BigDecimal coordLatitude) {
-        this.coordLatitude = coordLatitude;
-    }
-
-    public BigDecimal getCoordLongitude() {
+    public Double getCoordLongitude() {
         return coordLongitude;
     }
 
-    public void setCoordLongitude(BigDecimal coordLongitude) {
+    public void setCoordLongitude(Double coordLongitude) {
         this.coordLongitude = coordLongitude;
+    }
+
+    public Double getCoordLatitude() {
+        return coordLatitude;
+    }
+
+    public void setCoordLatitude(Double coordLatitude) {
+        this.coordLatitude = coordLatitude;
     }
 
     public Long getTipoNotificacaoId() {

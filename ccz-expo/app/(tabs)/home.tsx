@@ -19,28 +19,46 @@ export default function Home() {
   
   return (
 
+
     <View style={styles.container}>
 
       <Text style={styles.text}>Bem vindo {user?.nome}</Text>
 
-      <SharedButton
-          title="Solicitar auxílio"
-          onPress={() => router.push("/cadastroSolicitacao")}
-          style={{ backgroundColor: '#007AFF' }}
-          textStyle={{ fontSize: 20 }}
-        />
+      {user?.perfil === 'CIDADAO' ? (
+            <>
+               <SharedButton
+                  title="Solicitar auxílio"
+                  onPress={() => router.push("/cadastroSolicitacao")}
+                  style={{ backgroundColor: '#007AFF' }}
+                  textStyle={{ fontSize: 20 }}
+                />
 
-        <SharedButton
-          title="Minhas solicitações"
-          onPress={() => router.push("/minhasSolicitacoes")}
-          style={{ backgroundColor: '#E74C3C' }}
-          textStyle={{ fontSize: 20 }}
-        />
+                <SharedButton
+                  title="Minhas solicitações"
+                  onPress={() => router.push("/minhasSolicitacoes")}
+                  style={{ backgroundColor: '#E74C3C' }}
+                  textStyle={{ fontSize: 20 }}
+                />
+            </>
+          ) : (
+          <>
+              <SharedButton
+                title="Cadastrar alerta"
+                onPress={() => router.push("/cadastrarAlerta")}
+                style={{ backgroundColor: '#007AFF' }}
+                textStyle={{ fontSize: 20 }}
+              />
 
-    </View>
-    
-  );
-}
+              <SharedButton
+                title="Alertas emitidos"
+                onPress={() => router.push("/meusAlertas")}
+                style={{ backgroundColor: '#E74C3C' }}
+                textStyle={{ fontSize: 20 }}
+              />
+            </>
+          )}
+  </View>
+)};
 
 const styles = StyleSheet.create({
   container: {

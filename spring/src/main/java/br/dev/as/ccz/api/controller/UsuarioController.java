@@ -146,36 +146,5 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
-    @GetMapping("/usuarios/solicitacoes-proximas")
-    @Operation(summary = "Buscar solicitações próximas do usuário",
-            description = "Retorna os alertas próximas ao cidadão ou solicitações próximas ao agente")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "Usuário encontrado",
-//                    content = @Content(schema = @Schema(implementation = UsuarioDTO.class))),
-//            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-//            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-//    })
-    public ResponseEntity<List<MarkerDTO>> buscarSolicitacoesProximasDoUsuario(
-            @PathParam("id") Long idUsuario,
-            @PathParam("latitude") String latitude,
-            @PathParam("longitude") String longitude,
-            @PathParam("distancia") Integer distancia) {
 
-        UsuarioDTO usuario = usuarioService.buscarPorId(idUsuario);
-        if(usuario.getPerfil().equals("cidadao"))
-
-            System.out.println("Buscar alertas proximos ao cidadao");
-        else
-            System.out.println("Buscar alertas enviado proximos do agente");
-//<Marker usar o marker como DTO
-//                key={marker.id}
-//        coordinate={{
-//                latitude: marker.latitude,
-//                longitude: marker.longitude,
-//            }}
-//        title={marker.title}
-//        description={marker.description}
-//                />
-        return ResponseEntity.ok(null);
-    }
 }

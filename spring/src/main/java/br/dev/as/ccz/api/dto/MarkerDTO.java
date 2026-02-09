@@ -7,19 +7,20 @@ import jakarta.validation.constraints.Size;
 @Schema(description = "Objeto de transferência para dados dos marcadores do mapa")
 public record MarkerDTO(
 
-        @Schema(description = "ID da notificacao", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+        @Schema(description = "ID da notificacao (key)", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
         Long id,
 
-        @NotBlank(message = "A descrição é obrigatória")
+        @Schema(description = "Titulo da notificação enviada", example = "Riscos de dengue")
+        String titulo,
+
         @Size(max = 255)
-        @Schema(description = "Nome do município", example = "São Paulo")
+        @Schema(description = "Breve relato da ocorrência na região", example = "Foram detectados muitos focos de dengue em áreas próximas, redobre o cuidado.")
         String descricao,
 
-        @NotBlank(message = "A UF é obrigatória")
-        @Size(min = 2, max = 2, message = "UF deve ter 2 caracteres")
-        @Schema(description = "Sigla do estado", example = "SP")
-        String uf,
+        @Schema(description = "Longitude", example = "-54.8598216")
+        Double longitude,
 
-        @Schema(description = "Código IBGE do município", example = "3550308")
-        String codigoIbge
+        @Schema(description = "Latitude", example = "-22.2080968")
+        Double latitude
+
 ) {}

@@ -1,8 +1,8 @@
 package br.dev.as.ccz.domain;
 
 import jakarta.persistence.*;
+import org.locationtech.jts.geom.Point;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,10 +27,10 @@ public class AlertaCidadaoEntity {
     private LocalDateTime data;
 
     @Column(name = "coord_latitude", precision = 10, scale = 0)
-    private BigDecimal coordLatitude;
+    private Double coordLatitude;
 
     @Column(name = "coord_longitude", precision = 10, scale = 0)
-    private BigDecimal coordLongitude;
+    private Double coordLongitude;
 
     @ManyToOne
     @JoinColumn(name = "tipo_notificacao_id", nullable = false)
@@ -44,10 +44,18 @@ public class AlertaCidadaoEntity {
     @JoinColumn(name = "usuario_id", nullable = false)
     private UsuarioEntity usuario;
 
+    @Column(
+        name= "location_alert",
+        columnDefinition = "geography(Point, 4326)"
+    )
+    private Point point;
+
     public AlertaCidadaoEntity() {
     }
 
-    public AlertaCidadaoEntity(Long id, String endereco, MunicipioEntity municipio, String descricao, LocalDateTime data, BigDecimal coordLatitude, BigDecimal coordLongitude, TipoNotificacaoEntity tipoNotificacao, EspecieEntity especie, UsuarioEntity usuario) {
+    public AlertaCidadaoEntity(Long id, String endereco, MunicipioEntity municipio, String descricao, LocalDateTime data,
+                               Double coordLatitude, Double coordLongitude, TipoNotificacaoEntity tipoNotificacao, EspecieEntity especie,
+                               UsuarioEntity usuario) {
         this.id = id;
         this.endereco = endereco;
         this.municipio = municipio;
@@ -58,6 +66,14 @@ public class AlertaCidadaoEntity {
         this.tipoNotificacao = tipoNotificacao;
         this.especie = especie;
         this.usuario = usuario;
+    }
+
+    public Point getPoint() {
+        return point;
+    }
+
+    public void setPoint(Point point) {
+        this.point = point;
     }
 
     public Long getId() {
@@ -100,19 +116,19 @@ public class AlertaCidadaoEntity {
         this.data = data;
     }
 
-    public BigDecimal getCoordLatitude() {
+    public Double getCoordLatitude() {
         return coordLatitude;
     }
 
-    public void setCoordLatitude(BigDecimal coordLatitude) {
+    public void setCoordLatitude(Double coordLatitude) {
         this.coordLatitude = coordLatitude;
     }
 
-    public BigDecimal getCoordLongitude() {
+    public Double getCoordLongitude() {
         return coordLongitude;
     }
 
-    public void setCoordLongitude(BigDecimal coordLongitude) {
+    public void setCoordLongitude(Double coordLongitude) {
         this.coordLongitude = coordLongitude;
     }
 

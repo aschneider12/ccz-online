@@ -1,7 +1,8 @@
 package br.dev.as.ccz.domain;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
+import org.locationtech.jts.geom.Point;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,10 +30,10 @@ public class AlertaCczEntity {
     private LocalDateTime data;
 
     @Column(name = "coord_latitude", nullable = false, precision = 10, scale = 0)
-    private BigDecimal coordLatitude;
+    private Double coordLatitude;
 
     @Column(name = "coord_longitude", nullable = false, precision = 10, scale = 0)
-    private BigDecimal coordLongitude;
+    private Double coordLongitude;
 
     @ManyToOne
     @JoinColumn(name = "tipo_notificacao_id", nullable = false)
@@ -46,7 +47,21 @@ public class AlertaCczEntity {
     @JoinColumn(name = "usuario_id", nullable = false)
     private UsuarioEntity usuario;
 
+    @Column(
+        name= "location_alert",
+        columnDefinition = "geography(Point, 4326)"
+    )
+    private Point point;
+
     public AlertaCczEntity() {
+    }
+
+    public Point getPoint() {
+        return point;
+    }
+
+    public void setPoint(Point point) {
+        this.point = point;
     }
 
     public Long getId() {
@@ -97,19 +112,19 @@ public class AlertaCczEntity {
         this.data = data;
     }
 
-    public BigDecimal getCoordLatitude() {
+    public Double getCoordLatitude() {
         return coordLatitude;
     }
 
-    public void setCoordLatitude(BigDecimal coordLatitude) {
+    public void setCoordLatitude(Double coordLatitude) {
         this.coordLatitude = coordLatitude;
     }
 
-    public BigDecimal getCoordLongitude() {
+    public Double getCoordLongitude() {
         return coordLongitude;
     }
 
-    public void setCoordLongitude(BigDecimal coordLongitude) {
+    public void setCoordLongitude(Double coordLongitude) {
         this.coordLongitude = coordLongitude;
     }
 

@@ -43,42 +43,59 @@ const Explore = () => {
 
        setLoading(false);
 
-      //   setMarkers([{
-      //     id: 'current',
-      //     latitude,
-      //     longitude,
-      //     title: 'Você está aqui',
-      //     description: 'Localização atual',
-      //   },
-      // ]);
+        setMarkers([{
+          id: 'current',
+          latitude,
+          longitude,
+          title: 'Você está aqui',
+          description: 'Localização atual',
+        }  ]);
+
+      buscarSolicitacoesProximas(latitude, longitude);
 
      })();
   
 
-    buscarSolicitacoesProximas();
+    
+
   }, []);
 
-  const buscarSolicitacoesProximas = async () => {
+  const buscarSolicitacoesProximas = async (latitude, longitude) => {
+
       try {
 
+        console.log('buscando solicitacoes', latitude, longitude);
+
         const params = new URLSearchParams({
-          userId: user?.id?.toString() ?? '',
+          perfil: user?.perfil,
+          latitude:  latitude,
+          longitude: longitude,
+          distancia : 5000,
         }).toString();
 
         // Substitua pela chamada real à sua API
-        const response = await fetch(`${API_URLS.USUARIOS.SOLICITACOES_PROXIMAS}?${params}`);
+        const response = await fetch(`${API_URLS.ALERTAS.PROXIMOS}?${params}`);
 
         if(response.ok) {
-          const data = await response.json();
 
-          console.log(data)
+          const data = await response.json();
+          console.log('retorno do back', data)
+
+          const novosMarkers = data.map(item => ({
+            id : item.id, 
+            latitude: item.latitude,
+             longitude: item.longitude,
+             title : item.titulo,
+             description: item.descricao
+          }));
+
+          setMarkers(novosMarkers);
+
         } else {
+
           console.log('status response', response.status)
           console.log('response completa', response)
         }
-
-        
-        // setMarkers(data);
   
       } catch (error) {
 
@@ -101,6 +118,7 @@ const Explore = () => {
   }) => {
     // setRegion(newRegion);
     console.log('Região alterada:', newRegion);
+    // buscarSolicitacoesProximas(newRegion.latitude,newRegion.longitude);
   };
 
   return (

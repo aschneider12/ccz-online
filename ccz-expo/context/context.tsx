@@ -1,10 +1,10 @@
-import { User } from "../interfaces/IUser";
 import React, {
   createContext,
+  ReactNode,
   useContext,
   useState,
-  ReactNode,
 } from "react";
+import { User } from "../interfaces/IUser";
 
 interface UserContextData {
   user: User | null;

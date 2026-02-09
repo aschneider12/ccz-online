@@ -43,6 +43,9 @@ public class UsuarioService {
      */
     @Transactional(readOnly = true)
     public UsuarioDTO buscarPorId(Long id) {
+        if(id == null)
+            return null;
+
         UsuarioEntity usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário não encontrado com ID: " + id));
         return converterParaDTO(usuario);

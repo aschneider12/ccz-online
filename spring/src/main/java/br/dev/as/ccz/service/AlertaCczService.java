@@ -3,10 +3,15 @@ package br.dev.as.ccz.service;
 import br.dev.as.ccz.api.dto.AlertaCczCreateDTO;
 import br.dev.as.ccz.api.dto.AlertaCczDTO;
 import br.dev.as.ccz.api.dto.AlertaCczUpdateDTO;
+import br.dev.as.ccz.api.dto.MarkerDTO;
 import br.dev.as.ccz.api.mapper.AlertaCczMapper;
 import br.dev.as.ccz.domain.*;
 import br.dev.as.ccz.repository.*;
 import jakarta.validation.ValidationException;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -103,6 +108,16 @@ public class AlertaCczService {
      */
     @Transactional
     public AlertaCczDTO criar(AlertaCczCreateDTO createDTO) {
+
+          var longitude = createDTO.getCoordLongitude();
+          var latitude = createDTO.getCoordLatitude();
+
+        GeometryFactory geometryFactory =
+                new GeometryFactory(new PrecisionModel(), 4326);
+
+        Point point = geometryFactory.createPoint(
+                new Coordinate(longitude, latitude));
+
         // Verifica se a descrição já existe
         if (alertaCczRepository.existsByDescricao(createDTO.getDescricao())) {
             throw new ValidationException("Já existe um alerta com esta descrição");
@@ -123,10 +138,13 @@ public class AlertaCczService {
         // Converte DTO para Entity
         AlertaCczEntity alerta = mapper.toEntity(createDTO);
 
+
+
         // Seta os relacionamentos
         alerta.setMunicipio(municipio);
         alerta.setTipoNotificacao(tipoNotificacao);
         alerta.setUsuario(usuario);
+        alerta.setPoint(point);
 
         // Busca espécie se informada
         if (createDTO.getEspecieId() != null) {
@@ -207,5 +225,9 @@ public class AlertaCczService {
     @Transactional(readOnly = true)
     public Long contarPorTipoNotificacao(Long tipoNotificacaoId) {
         return alertaCczRepository.countByTipoNotificacaoId(tipoNotificacaoId);
+    }
+
+    public List<MarkerDTO> buscarAlertasRegiao(Double latitude, Double longitude, Integer distancia) {
+        return alertaCczRepository.findAllAlertasRegiao(latitude, longitude, distancia);
     }
 }
