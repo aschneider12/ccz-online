@@ -12,7 +12,10 @@ export const API_URLS = {
   },
   USUARIOS: {
     BASE: `${API_BASE_URL}/usuarios`,
-    SOLICITACOES_PROXIMAS: `${API_BASE_URL}/usuarios/solicitacoes-proximas`,
+  },
+  ALERTAS: {
+    BASE: `${API_BASE_URL}/alertas`,
+    PROXIMOS: `${API_BASE_URL}/alertas/proximidades`,
   },
   ESPECIES: {
     BASE: `${API_BASE_URL}/especies`,
