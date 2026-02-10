@@ -17,10 +17,10 @@ public record MarkerDTO(
         @Schema(description = "Breve relato da ocorrência na região", example = "Foram detectados muitos focos de dengue em áreas próximas, redobre o cuidado.")
         String descricao,
 
-        @Schema(description = "Longitude", example = "-54.8598216")
-        Double longitude,
-
         @Schema(description = "Latitude", example = "-22.2080968")
-        Double latitude
+        Double latitude,
+
+        @Schema(description = "Longitude", example = "-54.8598216")
+        Double longitude
 
 ) {}

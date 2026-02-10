@@ -92,6 +92,7 @@ public class AlertaCidadaoController {
                     content = @Content
             )
     })
+
     @GetMapping
     public ResponseEntity<List<AlertaCidadaoDTO>> buscarPorUsuario(
             @Parameter(
@@ -117,6 +118,7 @@ public class AlertaCidadaoController {
             ),
             @ApiResponse(responseCode = "404", description = "Alerta não encontrado", content = @Content)
     })
+
     @PutMapping("/{id}")
     public ResponseEntity<AlertaCidadaoDTO> atualizar(
             @Parameter(description = "ID do alerta", example = "10")

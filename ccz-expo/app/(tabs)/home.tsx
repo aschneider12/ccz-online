@@ -16,6 +16,8 @@ export default function Home() {
    // console.log(authObject.token)
  // })
 
+  if(user == null)
+    router.push("/");
   
   return (
 
@@ -23,6 +25,7 @@ export default function Home() {
     <View style={styles.container}>
 
       <Text style={styles.text}>Bem vindo {user?.nome}</Text>
+      <Text style={styles.text}>PERFIL: {user?.perfil}</Text>
 
       {user?.perfil === 'CIDADAO' ? (
             <>

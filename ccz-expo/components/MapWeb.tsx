@@ -33,6 +33,7 @@ const MapWeb: React.FC<MapWebProps> = ({
     longitudeDelta: 0.0421,
   },
   onRegionChange,
+  onClickOnMap,
   markers = [],
   showsUserLocation = true,
   followsUserLocation = false,
@@ -81,6 +82,11 @@ const MapWeb: React.FC<MapWebProps> = ({
       streetViewControl: true,
       fullscreenControl: true,
       zoomControl: true,
+    });
+
+    mapRef.current.addListener("click", (e) => {
+      console.log("Lat:", e.latLng.lat());
+      console.log("Lng:", e.latLng.lng());
     });
 
     // Listener para mudanças de região

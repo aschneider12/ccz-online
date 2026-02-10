@@ -19,7 +19,7 @@ public interface AlertaCidadaoRepository extends JpaRepository<AlertaCidadaoEnti
     @Query(value = """
         SELECT 
             a.id,
-            a.titulo,
+            a.descricao,
             a.descricao,
             ST_Y(a.location_alert::geometry),
             ST_X(a.location_alert::geometry) 

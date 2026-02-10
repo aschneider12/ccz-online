@@ -62,6 +62,10 @@ const MapNative: React.FC<MapNativeProps> = ({
         showsUserLocation={showsUserLocation}
         followsUserLocation={followsUserLocation}
         showsMyLocationButton={true}
+        onPress={(event) => {
+          const { latitude, longitude } = event.nativeEvent.coordinate;
+          console.log("Clicou em:", latitude, longitude);
+        }}
         showsCompass={true}
         showsScale={true}
         zoomEnabled={true}

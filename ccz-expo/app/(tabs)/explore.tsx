@@ -41,22 +41,26 @@ const Explore = () => {
 
        const { latitude, longitude } = location.coords;
 
-       setLoading(false);
+       setLoading(true);
 
-        setMarkers([{
-          id: 'current',
-          latitude,
-          longitude,
-          title: 'Você está aqui',
-          description: 'Localização atual',
-        }  ]);
+       setRegion({
+          latitude:  latitude,
+          longitude: longitude,
+          latitudeDelta: 0.0025,
+          longitudeDelta: 0.0025,
+       })
+        // setMarkers([{
+        //   id: 'current',
+        //   latitude,
+        //   longitude,
+        //   title: 'Você está aqui',
+        //   description: 'Localização atual',
+        // }  ]);
 
       buscarSolicitacoesProximas(latitude, longitude);
 
      })();
-  
-
-    
+     
 
   }, []);
 
@@ -84,17 +88,22 @@ const Explore = () => {
           const novosMarkers = data.map(item => ({
             id : item.id, 
             latitude: item.latitude,
-             longitude: item.longitude,
-             title : item.titulo,
-             description: item.descricao
+            longitude: item.longitude,
+            title : item.titulo,
+            description: item.descricao
           }));
 
+          if(data.length > 0) {
+
+            showAlert("Alertas na região", "Atenção, foram encontrados "+data.length+ " alertas na sua região", 'alert');
+          }
           setMarkers(novosMarkers);
 
         } else {
 
           console.log('status response', response.status)
           console.log('response completa', response)
+          showAlert("Problema no back", "Não foi possível buscar os alertas", 'alert');
         }
   
       } catch (error) {
@@ -103,12 +112,18 @@ const Explore = () => {
       }
     };
 
-  const [region, setRegion] = useState({
-    latitude: -22.2232,
-    longitude: -54.8086,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
+  const [region, setRegion] = useState({});
+  
+  const onClickOnMap = (newRegion: {
+    latitude: number;
+    longitude: number;
+    latitudeDelta: number;
+    longitudeDelta: number;
+  }) => {
+    // setRegion(newRegion);
+    console.log('mapa clicado', newRegion);
+    // buscarSolicitacoesProximas(newRegion.latitude,newRegion.longitude);
+  };
 
   const handleRegionChange = (newRegion: {
     latitude: number;
@@ -124,20 +139,21 @@ const Explore = () => {
   return (
     <View style={styles.container}>
       <MapNative
-        initialRegion={region}
+        initialRegion={region}        
         onRegionChange={handleRegionChange}
+        onClickOnMap={onClickOnMap}
         markers={markers}
         showsUserLocation={true}
         followsUserLocation={false}
       />
     </View>
-  );
-};
+  )};
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-});
+}); 
 
 export default Explore;

@@ -2,6 +2,7 @@ import SharedButton from '@/components/SharedButton';
 import { API_URLS } from '@/config/api';
 import { useUser } from '@/context/context';
 import { IAlertaCCZ } from '@/interfaces/IAlertaCCZ';
+import { MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -27,7 +29,6 @@ export default function SolicitacoesScreen() {
   async function buscarMeusAlertas() {
     try {
      
-      console.log('buscando alertas')
       const response = await fetch(API_URLS.ALERTTA_CCZ.BASE+"?usuarioId="+user?.id);
       const data = await response.json();
       setAlertas(data);
@@ -45,6 +46,24 @@ export default function SolicitacoesScreen() {
         <Text style={styles.titulo}>{item.descricao}</Text>
         <Text style={styles.tipo}>{item.tipoNotificacaoId}</Text>
         <Text style={styles.data}>{item.data}</Text>
+        
+
+        <View style={styles.actions}>
+          <TouchableOpacity
+            onPress={() => handleEdit(item)}
+            style={styles.actionButton}
+          >
+            <MaterialIcons name="edit" size={24} color="#4CAF50" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => handleDelete(item.id)}
+            style={styles.actionButton}
+          >
+            <MaterialIcons name="delete" size={24} color="#F44336" />
+          </TouchableOpacity>
+        </View> 
+
       </View>
     );
   }
@@ -61,7 +80,7 @@ export default function SolicitacoesScreen() {
 
     <View style={styles.container}> 
         <FlatList
-          data={solicitacoes}
+          data={meusAlertas}
           keyExtractor={(_, index) => index.toString()}
           renderItem={renderItem}
           contentContainerStyle={{ paddingBottom: 16 }}
@@ -71,16 +90,17 @@ export default function SolicitacoesScreen() {
             <Text style={styles.emptyText}>
               Você não emitiu nenhum alerta recente.
               </Text>
-                <SharedButton
-                      title="Novo alerta"
-                      onPress={() => router.push("/cadastrarAlerta")}
-                      style={{ backgroundColor: '#007AFF' }}
-                      textStyle={{ fontSize: 20 }}
-                      />
+              
             </View>
             
           )}
         />
+          <SharedButton
+              title="Novo alerta"
+              onPress={() => router.push("/cadastrarAlerta")}
+              style={{ backgroundColor: '#007AFF' }}
+              textStyle={{ fontSize: 20 }}
+            />
     </View>
   );
 }
@@ -92,7 +112,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   card: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#e2e9ed',
     padding: 16,
     borderRadius: 8,
     marginBottom: 12,
@@ -120,5 +140,13 @@ const styles = StyleSheet.create({
    emptyText: {
     fontSize: 16,
     color: '#999',
+  },
+  actions: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginLeft: 10,
+  },
+  actionButton: {
+    padding: 4,
   },
 });
