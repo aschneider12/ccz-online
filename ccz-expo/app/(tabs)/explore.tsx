@@ -3,6 +3,7 @@ import MapNative from '@/components/MapNative';
 import { API_URLS } from '@/config/api';
 import { useUser } from '@/context/context';
 import * as Location from 'expo-location';
+import { router } from 'expo-router';
 
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -20,7 +21,7 @@ const Explore = () => {
   const [loading, setLoading] = useState(true);
 
   const { user } = useUser(); 
-
+  
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
@@ -94,10 +95,11 @@ const Explore = () => {
           }));
 
           if(data.length > 0) {
-
+            setMarkers(novosMarkers);
             showAlert("Alertas na região", "Atenção, foram encontrados "+data.length+ " alertas na sua região", 'alert');
-          }
-          setMarkers(novosMarkers);
+          } else {
+            showAlert("Nenhum alerta na região", "Que bom, nada encontrado nessa área.", 'info');
+          }      
 
         } else {
 
@@ -107,22 +109,31 @@ const Explore = () => {
         }
   
       } catch (error) {
-
-        showAlert("Nenhum alerta", 'Nada foi encontrado na região', 'success');
+        console.log(error)
+        showAlert("Erro", 'Nada foi encontrado na região', 'error');
       }
     };
 
   const [region, setRegion] = useState({});
-  
-  const onClickOnMap = (newRegion: {
-    latitude: number;
-    longitude: number;
-    latitudeDelta: number;
-    longitudeDelta: number;
-  }) => {
-    // setRegion(newRegion);
-    console.log('mapa clicado', newRegion);
-    // buscarSolicitacoesProximas(newRegion.latitude,newRegion.longitude);
+
+  const onClickOnMap = (event) => {
+
+    const latitude = event.latitude;
+    const longitude = event.longitude;
+
+    if(user?.perfil == 'CIDADAO') {
+    
+      router.push({
+        pathname: '/cadastroSolicitacao',
+        params: {lat: latitude, lng: longitude}
+      })
+    } else {
+
+      router.push({
+        pathname: '/cadastrarAlerta',
+        params: {lat: latitude, lng: longitude}
+      })
+    }
   };
 
   const handleRegionChange = (newRegion: {

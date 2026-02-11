@@ -5,6 +5,10 @@ import br.dev.as.ccz.api.dto.MarkerDTO;
 import br.dev.as.ccz.domain.AlertaCidadaoEntity;
 import br.dev.as.ccz.repository.*;
 import jakarta.persistence.EntityNotFoundException;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,11 +40,7 @@ public class AlertaCidadaoService {
     }
 
     @Transactional
-    public AlertaCidadaoDTO criar(AlertaCidadaoDTO dto) {
-
-//        if (alertaRepository.existsByDescricao(dto.getDescricao())) {
-//            throw new IllegalArgumentException("Já existe um alerta com essa descrição");
-//        }
+    public AlertaCidadaoDTO salvarAlertaCidadao(AlertaCidadaoDTO dto) {
 
         AlertaCidadaoEntity entity = new AlertaCidadaoEntity();
         mapearDtoParaEntity(dto, entity);
@@ -93,7 +93,7 @@ public class AlertaCidadaoService {
         entity.setDescricao(dto.getDescricao());
         entity.setCoordLatitude(dto.getCoordLatitude());
         entity.setCoordLongitude(dto.getCoordLongitude());
-
+        entity.setPoint(criarPointDoBancoPelasCoordenadas(dto));
         entity.setMunicipio(
                 municipioRepository.findById(dto.getMunicipioId())
                         .orElseThrow(() -> new EntityNotFoundException("Município não encontrado"))
@@ -160,4 +160,19 @@ public class AlertaCidadaoService {
 
         return alertaCidadaoRepository.findAllAlertasRegiao(latitude, longitude, distancia);
     }
+
+    private Point criarPointDoBancoPelasCoordenadas(AlertaCidadaoDTO createDTO) {
+
+        var longitude = createDTO.getCoordLongitude();
+        var latitude = createDTO.getCoordLatitude();
+
+        GeometryFactory geometryFactory =
+                new GeometryFactory(new PrecisionModel(), 4326);
+
+        Point point = geometryFactory.createPoint(
+                new Coordinate(longitude, latitude));
+
+        return point;
+    }
+
 }

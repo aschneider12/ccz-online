@@ -44,10 +44,14 @@ public class AlertaCczController {
             @ApiResponse(responseCode = "200", description = "Lista de alertas retornada com sucesso"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<Page<AlertaCczDTO>> listarTodos(
-            @PageableDefault(size = 20, sort = "data", direction = Sort.Direction.DESC)
-            @Parameter(description = "Parâmetros de paginação e ordenação") Pageable pageable) {
-        Page<AlertaCczDTO> alertas = alertaCczService.listarTodos(pageable);
+    public ResponseEntity<List<AlertaCczDTO>> buscarAlertasDoAgente(
+            @Parameter(
+                    description = "ID do usuário",
+                    example = "1"
+            )
+            @RequestParam Long usuarioId ) {
+
+        List<AlertaCczDTO> alertas = alertaCczService.buscarAlertasCcz(usuarioId);
         return ResponseEntity.ok(alertas);
     }
 
@@ -155,9 +159,9 @@ public class AlertaCczController {
             @ApiResponse(responseCode = "409", description = "Descrição já cadastrada"),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
-    public ResponseEntity<AlertaCczDTO> criar(
+    public ResponseEntity<AlertaCczDTO> criarNovoAlerta(
             @Valid @RequestBody AlertaCczCreateDTO createDTO) {
-        AlertaCczDTO alertaCriado = alertaCczService.criar(createDTO);
+        AlertaCczDTO alertaCriado = alertaCczService.savarAlerta(createDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(alertaCriado);
     }
 

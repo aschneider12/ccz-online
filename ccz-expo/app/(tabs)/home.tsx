@@ -1,26 +1,30 @@
 import SharedButton from "@/components/SharedButton";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useUser } from "../../context/context";
-
-
 
 export default function Home() {
   
     const router = useRouter();
  
-    const { user } = useUser(); 
+    const { user } = useUser();
+
+    useEffect(() => {
+      
+      if (!user) router.replace("/");
+      
+    }, [user]);
+
+    if (user === null) {
+      return null; // ou um loading
+    }
   //const token = authContext.currentUser?.getIdTokenResult();
   //token?.then( (authObject) => {
    // console.log(authObject.token)
  // })
-
-  if(user == null)
-    router.push("/");
   
   return (
-
 
     <View style={styles.container}>
 

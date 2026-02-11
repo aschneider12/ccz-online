@@ -2,6 +2,7 @@ package br.dev.as.ccz.repository;
 
 import br.dev.as.ccz.api.dto.MarkerDTO;
 import br.dev.as.ccz.domain.AlertaCczEntity;
+import io.micrometer.common.KeyValues;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -115,4 +116,6 @@ public interface AlertaCczRepository extends JpaRepository<AlertaCczEntity, Long
      * Verifica se existe alerta com a mesma descrição, exceto o ID especificado
      */
     boolean existsByDescricaoAndIdNot(String descricao, Long id);
+
+    List<AlertaCczEntity> findAllByUsuarioId(Long usuarioId);
 }

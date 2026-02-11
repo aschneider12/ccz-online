@@ -47,16 +47,27 @@ public class AlertaCczService {
     }
 
     /**
-     * Lista todos os alertas com paginação
+     * Lista todos os alertas do ccz, se tiver filtro aplique
      */
     @Transactional(readOnly = true)
-    public Page<AlertaCczDTO> listarTodos(Pageable pageable) {
-        return alertaCczRepository.findAll(pageable)
-                .map(mapper::toDTO);
+    public List<AlertaCczDTO> buscarAlertasCcz(Long usuarioId) {
+
+        //TODO - outros filtros que possam surgir, tratar como object filtro
+        if (usuarioId != null && usuarioId != 0) {
+            return alertaCczRepository.findAllByUsuarioId(usuarioId)
+                    .stream()
+                    .map(mapper::toDTO)
+                    .collect(Collectors.toList());
+
+        } else {
+            return alertaCczRepository.findAll()
+                    .stream()
+                    .map(mapper::toDTO).toList();
+        }
     }
 
     /**
-     * Busca um alerta por ID
+     * Busca um alerta por ID individual
      */
     @Transactional(readOnly = true)
     public AlertaCczDTO buscarPorId(Long id) {
@@ -107,16 +118,7 @@ public class AlertaCczService {
      * Cria um novo alerta
      */
     @Transactional
-    public AlertaCczDTO criar(AlertaCczCreateDTO createDTO) {
-
-          var longitude = createDTO.getCoordLongitude();
-          var latitude = createDTO.getCoordLatitude();
-
-        GeometryFactory geometryFactory =
-                new GeometryFactory(new PrecisionModel(), 4326);
-
-        Point point = geometryFactory.createPoint(
-                new Coordinate(longitude, latitude));
+    public AlertaCczDTO savarAlerta(AlertaCczCreateDTO createDTO) {
 
         // Verifica se a descrição já existe
         if (alertaCczRepository.existsByDescricao(createDTO.getDescricao())) {
@@ -138,13 +140,11 @@ public class AlertaCczService {
         // Converte DTO para Entity
         AlertaCczEntity alerta = mapper.toEntity(createDTO);
 
-
-
         // Seta os relacionamentos
         alerta.setMunicipio(municipio);
         alerta.setTipoNotificacao(tipoNotificacao);
         alerta.setUsuario(usuario);
-        alerta.setPoint(point);
+        alerta.setPoint( criarPointDoBancoPelasCoordenadas(createDTO) );
 
         // Busca espécie se informada
         if (createDTO.getEspecieId() != null) {
@@ -156,6 +156,20 @@ public class AlertaCczService {
         // Salva o alerta
         AlertaCczEntity alertaSalvo = alertaCczRepository.save(alerta);
         return mapper.toDTO(alertaSalvo);
+    }
+
+    private Point criarPointDoBancoPelasCoordenadas(AlertaCczCreateDTO createDTO) {
+
+        var longitude = createDTO.getCoordLongitude();
+        var latitude = createDTO.getCoordLatitude();
+
+        GeometryFactory geometryFactory =
+                new GeometryFactory(new PrecisionModel(), 4326);
+
+        Point point = geometryFactory.createPoint(
+                new Coordinate(longitude, latitude));
+
+        return point;
     }
 
     /**

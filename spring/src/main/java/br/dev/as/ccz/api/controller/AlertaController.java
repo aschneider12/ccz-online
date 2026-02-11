@@ -49,13 +49,11 @@ public class AlertaController {
 
         List<MarkerDTO> alertasProximos = null;
 
-        alertasProximos = alertaCczService.buscarAlertasRegiao(latitude, longitude, distancia);
-
-//        if (perfil.equalsIgnoreCase("CIDADAO"))
-//            alertasProximos = alertaCczService.buscarAlertasRegiao(latitude, longitude, distancia);
-//        else
-//            if(perfil.equalsIgnoreCase("AGENTE_CCZ"))
-                alertasProximos = alertaCidadaoService.buscarAlertasRegiao(latitude,longitude, distancia);
+        if (perfil.equalsIgnoreCase("CIDADAO"))
+            alertasProximos = alertaCczService.buscarAlertasRegiao(latitude, longitude, distancia);
+        else
+            if(perfil.equalsIgnoreCase("AGENTE_CCZ"))
+                alertasProximos = alertaCidadaoService.buscarAlertasRegiao(latitude, longitude, distancia);
 
         return ResponseEntity.ok(alertasProximos);
     }

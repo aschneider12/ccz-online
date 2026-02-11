@@ -8,12 +8,15 @@ interface MapWebProps {
     latitudeDelta: number;
     longitudeDelta: number;
   };
+
   onRegionChange?: (region: {
     latitude: number;
     longitude: number;
     latitudeDelta: number;
     longitudeDelta: number;
   }) => void;
+  onClickOnMap?: (event: {}) => void;
+
   markers?: Array<{
     id: string;
     latitude: number;
@@ -85,8 +88,10 @@ const MapWeb: React.FC<MapWebProps> = ({
     });
 
     mapRef.current.addListener("click", (e) => {
-      console.log("Lat:", e.latLng.lat());
-      console.log("Lng:", e.latLng.lng());
+      onClickOnMap?.({
+        latitude: e.latLng.lat(),
+        longitude: e.latLng.lng(),
+      });
     });
 
     // Listener para mudanças de região

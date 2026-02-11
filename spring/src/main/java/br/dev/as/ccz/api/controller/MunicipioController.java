@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+@Deprecated(since = "10/02/2026", forRemoval = true)
 @RestController
 @RequestMapping("/api/v1/municipios")
 @Tag(name = "Municípios", description = "Gerenciamento de cidades e códigos IBGE")

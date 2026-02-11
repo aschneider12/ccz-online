@@ -42,12 +42,13 @@ public class AlertaCidadaoController {
                     content = @Content(schema = @Schema(implementation = AlertaCidadaoDTO.class))
             ),
             @ApiResponse(responseCode = "400", description = "Dados inválidos", content = @Content)
-    })
+    }
+    )
     @PostMapping
-    public ResponseEntity<AlertaCidadaoDTO> criar(
+    public ResponseEntity<AlertaCidadaoDTO> criarAlerta(
             @Valid @RequestBody AlertaCidadaoDTO dto) {
 
-        AlertaCidadaoDTO criado = alertaCidadaoService.criar(dto);
+        AlertaCidadaoDTO criado = alertaCidadaoService.salvarAlertaCidadao(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(criado);
     }
 
@@ -94,7 +95,7 @@ public class AlertaCidadaoController {
     })
 
     @GetMapping
-    public ResponseEntity<List<AlertaCidadaoDTO>> buscarPorUsuario(
+    public ResponseEntity<List<AlertaCidadaoDTO>> buscarAlertasDoCidadao(
             @Parameter(
                     description = "ID do usuário",
                     example = "123"

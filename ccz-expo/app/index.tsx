@@ -97,7 +97,7 @@ export default function IndexScreen() {
       />
       
       <SharedButton title='ENTRAR' onPress={handleDirectLogin}></SharedButton>
-      <SharedButton title='Login via GOV.BR' onPress={handleGovBrLogin}></SharedButton>
+      <SharedButton title='Login via GOV.BR' onPress={handleGovBrLogin} disabled></SharedButton>
 
     </View>
 

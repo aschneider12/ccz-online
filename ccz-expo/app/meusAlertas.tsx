@@ -47,7 +47,6 @@ export default function SolicitacoesScreen() {
         <Text style={styles.tipo}>{item.tipoNotificacaoId}</Text>
         <Text style={styles.data}>{item.data}</Text>
         
-
         <View style={styles.actions}>
           <TouchableOpacity
             onPress={() => handleEdit(item)}

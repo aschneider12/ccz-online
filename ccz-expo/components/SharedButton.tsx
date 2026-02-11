@@ -17,6 +17,7 @@ interface SharedButtonProps extends TouchableOpacityProps {
 export default function SharedButton({
   title,
   onPress,
+  disabled,
   style,
   textStyle,
   ...props
@@ -25,6 +26,7 @@ export default function SharedButton({
     <TouchableOpacity
       style={[styles.button, style]}
       onPress={onPress}
+      disabled={disabled}
       activeOpacity={0.7}
       {...props}
     >

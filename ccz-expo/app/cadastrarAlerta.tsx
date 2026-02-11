@@ -10,11 +10,11 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import * as Location from 'expo-location';
 import { router, Stack } from 'expo-router';
+import { useSearchParams } from 'expo-router/build/hooks';
 import React, { useEffect, useState } from 'react';
 
 import {
   ActivityIndicator,
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -27,6 +27,11 @@ import {
 
 const CadastroAlertaCczScreen = () => {
 
+  const allParams = useSearchParams();
+
+  const latitudeParam = allParams.get('lat');
+  const longitudeParam = allParams.get('lng');
+
   const { user } = useUser(); 
 
   const [formData, setFormData] = useState<IAlertaCCZ>({
@@ -37,8 +42,8 @@ const CadastroAlertaCczScreen = () => {
     tipoNotificacaoId: '',
     especieId: '',
     usuarioId: user?.id, 
-    coordLatitude: '',
-    coordLongitude: '',
+    coordLatitude: latitudeParam,
+    coordLongitude: longitudeParam,
     data: new Date(),
   });
 
@@ -146,11 +151,12 @@ const CadastroAlertaCczScreen = () => {
         coordLongitude: location.coords.longitude.toFixed(6),
       });
 
-      Alert.alert('Sucesso', 'Localização obtida com sucesso!');
+      showAlert('Sucesso', 'Localização obtida com sucesso!', 'success');
 
     } catch (error) {
+      
       console.error('Erro ao obter localização:', error);
-      Alert.alert('Erro', 'Não foi possível obter a localização');
+      showAlert('Erro', 'Não foi possível obter a localização', 'error');
 
     } finally {
 
@@ -291,11 +297,11 @@ const CadastroAlertaCczScreen = () => {
             <TextInput
               style={[styles.input, errors.titulo && styles.inputError]}
               placeholder="Informe o titulo do alerta..."
-              value={formData.descricao}
-              onChangeText={(text) => setFormData({ ...formData, descricao: text })}
+              value={formData.titulo}
+              onChangeText={(text) => setFormData({ ...formData, titulo: text })}
               multiline
               numberOfLines={1}
-              maxLength={255}
+              maxLength={25}
             />
             {errors.titulo && (
               <Text style={styles.errorText}>{errors.titulo}</Text>
@@ -494,22 +500,26 @@ const CadastroAlertaCczScreen = () => {
               )}
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.button, styles.buttonSecondary]}
-              onPress={limparFormulario}
-              disabled={loading}
-            >
-              <Ionicons name="trash-outline" size={20} color="#E74C3C" />
-              <Text style={styles.buttonTextSecondary}>Limpar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonSecondary]}
-              onPress={router.back}
-              disabled={loading}
-            >
-              <Ionicons name="arrow-back" size={20} color="#50e73c" />
-              <Text style={styles.buttonTextSecondary}>Voltar</Text>
-            </TouchableOpacity>
+
+            <View style={styles.coordsRow}>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonSecondary]}
+                onPress={limparFormulario}
+                disabled={loading}
+              >
+                <Ionicons name="trash-outline" size={20} />
+                <Text style={styles.buttonTextSecondary}>Limpar</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.button, styles.buttonSecondary]}
+                onPress={router.back}
+                disabled={loading}
+              >
+                <Ionicons name="arrow-back" size={20} />
+                <Text style={styles.buttonTextSecondary}>Voltar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -679,9 +689,9 @@ const styles = StyleSheet.create({
   buttonSecondary: {
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#E74C3C',
+    margin: 5,
+    borderColor: '#50110b',
     flex: 1,
-    flexDirection: 'row',
   },
   buttonText: {
     color: '#FFFFFF',
@@ -690,7 +700,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   buttonTextSecondary: {
-    color: '#E74C3C',
+    color: '#1a1413',
     fontSize: 16,
     fontWeight: '600',
     marginLeft: 8,
