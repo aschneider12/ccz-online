@@ -28,8 +28,8 @@ export default function Home() {
 
     <View style={styles.container}>
 
-      <Text style={styles.text}>Bem vindo {user?.nome}</Text>
-      <Text style={styles.text}>PERFIL: {user?.perfil}</Text>
+      <Text style={styles.text}>Bem vindo(a) {user?.nome}</Text>
+      <Text style={styles.text}>Perfil de acesso: {user?.perfil}</Text>
 
       {user?.perfil === 'CIDADAO' ? (
             <>

@@ -3,7 +3,6 @@ import { API_URLS } from '@/config/api';
 import { useUser } from '@/context/context';
 import { IAlertaCidadao } from '@/interfaces/IAlertaCidadao';
 import { IEspecie } from '@/interfaces/IEspecie';
-import { IMunicipio } from '@/interfaces/IMunicipio';
 import { ITipoNotificacao } from '@/interfaces/ITipoNotificacao';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -37,7 +36,6 @@ const CadastroAlertaCidadaoScreen = () => {
   const [formData, setFormData] = useState<IAlertaCidadao>({
     descricao: '',
     endereco: '',
-    municipioId: '',
     tipoNotificacaoId: '',
     especieId: '',
     usuarioId: user?.id, 
@@ -55,36 +53,14 @@ const CadastroAlertaCidadaoScreen = () => {
 
   // Listas para os selects
   const [tiposNotificacao, setTiposNotificacao] = useState<ITipoNotificacao[]>([]);
-
-  const [municipios, setMunicipios] = useState<IMunicipio[]>([]);
   
   const [especies, setEspecies] = useState<IEspecie[]>([]);
 
   // Carregar dados dos selects
   useEffect(() => {
-    carregarMunicipios();
     carregarTiposNotificacao();
     carregarEspecies();
   }, []);
-
-  const carregarMunicipios = async () => {
-    try {
-
-      // Substitua pela chamada real à sua API
-      const response = await fetch(API_URLS.MUNICIPIOS.BASE);
-      const data = await response.json();
-      setMunicipios(data);
-
-    } catch (error) {
-      showAlert("Problema request", 'Erro ao carregar municípios:', 'error');
-      // Dados mockados para exemplo*/
-      setMunicipios([
-        { id: 1, descricao: 'Campo Grande', uf: 'MS' },
-        { id: 2, descricao: 'Dourados', uf: 'MS' },
-        { id: 3, descricao: 'Três Lagoas', uf: 'MS' },
-      ]);
-    }
-  };
 
   const carregarTiposNotificacao = async () => {
     try {
@@ -172,10 +148,6 @@ const CadastroAlertaCidadaoScreen = () => {
       novosErros.descricao = 'Descrição deve ter pelo menos 10 caracteres';
     }
 
-    if (!formData.municipioId) {
-      novosErros.municipioId = 'Município é obrigatório';
-    }
-
     if (!formData.tipoNotificacaoId) {
       novosErros.tipoNotificacaoId = 'Tipo de notificação é obrigatório';
     }
@@ -197,7 +169,6 @@ const CadastroAlertaCidadaoScreen = () => {
       const payload = {
         descricao: formData.descricao,
         endereco: formData.endereco || null,
-        municipioId: parseInt(formData.municipioId),
         tipoNotificacaoId: parseInt(formData.tipoNotificacaoId),
         especieId: formData.especieId ? parseInt(formData.especieId) : null,
         usuarioId: formData.usuarioId,
@@ -244,7 +215,6 @@ const CadastroAlertaCidadaoScreen = () => {
     setFormData({
       descricao: '',
       endereco: '',
-      municipioId: '',
       tipoNotificacaoId: '',
       especieId: '',
       usuarioId: 1,
@@ -264,16 +234,6 @@ const CadastroAlertaCidadaoScreen = () => {
   };
 
   
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
-    const [items, setItems] = useState(
-      municipios.map(m => ({
-        label: `${m.descricao} - ${m.uf}`,
-        value: m.id
-      }))
-    );
-
-
   return (
 
     
@@ -387,37 +347,12 @@ const CadastroAlertaCidadaoScreen = () => {
             )}
           </View>
 
-          {/* Município */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Município *</Text>
-            <View style={[styles.pickerContainer, errors.municipioId && styles.inputError]}>
-              <Picker
-                selectedValue={formData.municipioId}
-                onValueChange={(value) => setFormData({ ...formData, municipioId: value })}
-                style={styles.picker}
-              >
-                <Picker.Item label="Selecione o município..." value="" />
-                {municipios?.map((municipio) => (
-                  <Picker.Item
-                    key={municipio.id}
-                    label={`${municipio.descricao} - ${municipio.uf}`}
-                    value={municipio.id}
-                  />
-                ))}
-              </Picker>
-
-            </View>
-            {errors.municipioId && (
-              <Text style={styles.errorText}>{errors.municipioId}</Text>
-            )}
-          </View>
-
           {/* Endereço */}
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Endereço (Opcional)</Text>
+            <Text style={styles.label}>Endereço (opcional)</Text>
             <TextInput
               style={styles.input}
-              placeholder="Rua, número, bairro..."
+              placeholder="Rua, número, bairro ou referência..."
               value={formData.endereco}
               onChangeText={(text) => setFormData({ ...formData, endereco: text })}
               maxLength={255}

@@ -49,16 +49,17 @@ const Explore = () => {
           longitude: longitude,
           latitudeDelta: 0.0025,
           longitudeDelta: 0.0025,
-       })
-        // setMarkers([{
-        //   id: 'current',
-        //   latitude,
-        //   longitude,
-        //   title: 'Você está aqui',
-        //   description: 'Localização atual',
-        // }  ]);
+       });
 
-      buscarSolicitacoesProximas(latitude, longitude);
+       setMarkers([{
+          id: 'current',
+          latitude,
+          longitude,
+          title: 'Você está aqui!',
+          description: 'Clique no mapa para adicionar um alerta!',
+        }]);
+
+        buscarSolicitacoesProximas(latitude, longitude);
 
      })();
      
