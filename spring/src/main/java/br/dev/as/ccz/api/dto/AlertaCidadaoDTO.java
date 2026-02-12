@@ -29,14 +29,6 @@ public class AlertaCidadaoDTO {
     private String endereco;
 
     @Schema(
-            description = "ID do município",
-            example = "10",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    @NotNull
-    private Long municipioId;
-
-    @Schema(
             description = "Descrição do alerta",
             example = "Avistamento de animal silvestre",
             requiredMode = Schema.RequiredMode.REQUIRED
@@ -88,10 +80,6 @@ public class AlertaCidadaoDTO {
     @NotNull
     private Long usuarioId;
 
-    /* ==========================
-       Getters e Setters
-       ========================== */
-
     public Long getId() {
         return id;
     }
@@ -106,14 +94,6 @@ public class AlertaCidadaoDTO {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
-    }
-
-    public Long getMunicipioId() {
-        return municipioId;
-    }
-
-    public void setMunicipioId(Long municipioId) {
-        this.municipioId = municipioId;
     }
 
     public String getDescricao() {

@@ -17,8 +17,8 @@ public class AlertaCidadaoEntity {
     private String endereco;
 
     @ManyToOne
-    @JoinColumn(name = "municipio_id", nullable = false)
-    private MunicipioEntity municipio;
+    @JoinColumn(name = "municipio_id", nullable = true)
+    private MunicipioEntity municipio;//sera preenchido conforme localizacao
 
     @Column(name = "descricao", nullable = false, unique = true, length = 255)
     private String descricao;

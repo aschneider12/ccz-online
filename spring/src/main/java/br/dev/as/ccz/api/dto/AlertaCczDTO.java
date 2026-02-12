@@ -20,9 +20,6 @@ public class AlertaCczDTO {
     @Schema(description = "Endereço do local", example = "Rua das Flores, 123")
     private String endereco;
 
-    @Schema(description = "Município")
-    private Long municipioId;
-
     @Schema(description = "Data e hora do alerta", example = "2026-01-26T14:30:00")
     private LocalDateTime data;
 
@@ -96,14 +93,6 @@ public class AlertaCczDTO {
 
     public void setCoordLatitude(Double coordLatitude) {
         this.coordLatitude = coordLatitude;
-    }
-
-    public Long getMunicipioId() {
-        return municipioId;
-    }
-
-    public void setMunicipioId(Long municipioId) {
-        this.municipioId = municipioId;
     }
 
     public Long getTipoNotificacaoId() {

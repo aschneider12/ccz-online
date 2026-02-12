@@ -23,7 +23,7 @@ public class AlertaCczEntity {
     private String endereco;
 
     @ManyToOne
-    @JoinColumn(name = "municipio_id", nullable = false)
+    @JoinColumn(name = "municipio_id", nullable = true)
     private MunicipioEntity municipio;
 
     @Column(name = "data", nullable = false)

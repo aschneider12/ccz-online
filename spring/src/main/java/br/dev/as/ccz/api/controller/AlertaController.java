@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/alertas")
-@Tag(name = "Alertas", description = "Gerenciamento de alertas do Centro de Controle de Zoonoses")
+@Tag(name = "Alertas", description = "Gerenciamento de alertas do Centro de Controle de Zoonoses pela localização")
 public class AlertaController {
 
     private final AlertaCczService alertaCczService;

@@ -15,7 +15,6 @@ public interface AlertaCczMapper {
     @Mapping(source = "tipoNotificacao.id", target = "tipoNotificacaoId")
     @Mapping(source = "especie.id", target = "especieId")
     @Mapping(source = "usuario.id", target = "usuarioId")
-    @Mapping(source = "municipio.id", target = "municipioId" )
     AlertaCczDTO toDTO(AlertaCczEntity entity);
 
     /**
@@ -23,7 +22,6 @@ public interface AlertaCczMapper {
      * Ignora os relacionamentos pois serão setados manualmente no service
      */
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "municipio", ignore = true)
     @Mapping(target = "tipoNotificacao", ignore = true)
     @Mapping(target = "especie", ignore = true)
     @Mapping(target = "usuario", ignore = true)
@@ -35,7 +33,6 @@ public interface AlertaCczMapper {
      */
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "municipio.id", source = "municipioId", ignore = true)
     @Mapping(target = "tipoNotificacao", ignore = true)
     @Mapping(target = "especie", ignore = true)
     @Mapping(target = "usuario", ignore = true )

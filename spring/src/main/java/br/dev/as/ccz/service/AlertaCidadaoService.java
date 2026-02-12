@@ -94,10 +94,6 @@ public class AlertaCidadaoService {
         entity.setCoordLatitude(dto.getCoordLatitude());
         entity.setCoordLongitude(dto.getCoordLongitude());
         entity.setPoint(criarPointDoBancoPelasCoordenadas(dto));
-        entity.setMunicipio(
-                municipioRepository.findById(dto.getMunicipioId())
-                        .orElseThrow(() -> new EntityNotFoundException("Município não encontrado"))
-        );
 
         entity.setUsuario(
                 usuarioRepository.findById(dto.getUsuarioId())
@@ -129,7 +125,6 @@ public class AlertaCidadaoService {
         dto.setCoordLatitude(entity.getCoordLatitude());
         dto.setCoordLongitude(entity.getCoordLongitude());
 
-        dto.setMunicipioId(entity.getMunicipio().getId());
         dto.setUsuarioId(entity.getUsuario().getId());
         dto.setTipoNotificacaoId(entity.getTipoNotificacao().getId());
 

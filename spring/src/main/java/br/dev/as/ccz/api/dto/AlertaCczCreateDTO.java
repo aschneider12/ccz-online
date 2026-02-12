@@ -25,10 +25,6 @@ public class AlertaCczCreateDTO {
     @Schema(description = "Endereço do local", example = "Rua das Flores, 123", maxLength = 255)
     private String endereco;
 
-    @NotNull(message = "Município é obrigatório")
-    @Schema(description = "ID do município", example = "1")
-    private Long municipioId;
-
     @NotNull(message = "Data é obrigatória")
     @Schema(description = "Data e hora do alerta", example = "2026-01-26T14:30:00")
     private LocalDateTime data;
@@ -75,14 +71,6 @@ public class AlertaCczCreateDTO {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
-    }
-
-    public Long getMunicipioId() {
-        return municipioId;
-    }
-
-    public void setMunicipioId(Long municipioId) {
-        this.municipioId = municipioId;
     }
 
     public LocalDateTime getData() {

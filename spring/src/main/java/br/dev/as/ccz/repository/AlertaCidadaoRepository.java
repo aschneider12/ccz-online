@@ -24,7 +24,7 @@ public interface AlertaCidadaoRepository extends JpaRepository<AlertaCidadaoEnti
             ST_Y(a.location_alert::geometry),
             ST_X(a.location_alert::geometry) 
         
-        FROM alerta_ccz a
+        FROM alerta_cidadao a
         WHERE ST_DWithin(
             a.location_alert,
             ST_SetSRID(

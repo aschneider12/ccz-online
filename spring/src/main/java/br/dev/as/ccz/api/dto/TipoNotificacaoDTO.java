@@ -12,7 +12,7 @@ public record TipoNotificacaoDTO(
 
         @NotBlank(message = "A descrição não pode ser vazia")
         @Size(max = 255)
-        @Schema(description = "Descrição do tipo (ex: Alerta, Informativo)", example = "Manutenção Programada")
+        @Schema(description = "Descrição do tipo (ex: Alerta, Informativo)", example = "Infestação de escorpiões")
         String descricao,
 
         @NotBlank(message = "O nível de urgência é obrigatório")

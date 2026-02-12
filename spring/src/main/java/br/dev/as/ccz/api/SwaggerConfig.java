@@ -14,25 +14,15 @@ import org.springframework.context.annotation.Configuration;
                 description = "API for managing tasks",
                 version = "1.0.0",
                 contact = @Contact(
-                        name = "A. Schneider",
+                        name = "Alessandro Schneider, Eduardo Serafim",
                         email = "schn.alessandro@gmail.com",
-                        url = "http://github.com/aschneider12"
+                        url = "https://github.com/aschneider12/ccz-online"
                 )
         ),
         servers = {
                 @Server(
                         url = "http://localhost:8080",
-                        description = "Servidor de Desenvolvimento"
-                )
-        },
-        tags = {
-                @Tag(
-                        name = "Autenticação",
-                        description = "Endpoints para autenticação de usuários"
-                ),
-                @Tag(
-                        name = "Usuários",
-                        description = "Operações CRUD para gerenciamento de usuários"
+                        description = "Servidor de desenvolvimento"
                 )
         }
 )

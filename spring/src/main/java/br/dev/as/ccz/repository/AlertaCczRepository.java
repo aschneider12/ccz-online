@@ -23,7 +23,7 @@ public interface AlertaCczRepository extends JpaRepository<AlertaCczEntity, Long
             a.descricao,
             ST_Y(a.location_alert::geometry),
             ST_X(a.location_alert::geometry) 
-        FROM alerta_cidadao a 
+        FROM alerta_ccz a 
         LEFT JOIN tipo_notificacao t ON t.id = a.tipo_notificacao_id 
         WHERE ST_DWithin(
             a.location_alert,

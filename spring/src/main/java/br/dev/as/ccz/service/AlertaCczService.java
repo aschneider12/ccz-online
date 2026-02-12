@@ -125,10 +125,6 @@ public class AlertaCczService {
             throw new ValidationException("Já existe um alerta com esta descrição");
         }
 
-        // Busca e valida o município
-        MunicipioEntity municipio = municipioRepository.findById(createDTO.getMunicipioId())
-                .orElseThrow(() -> new ValidationException("Município não encontrado"));
-
         // Busca e valida o tipo de notificação
         TipoNotificacaoEntity tipoNotificacao = tipoNotificacaoRepository.findById(createDTO.getTipoNotificacaoId())
                 .orElseThrow(() -> new ValidationException("Tipo de notificação não encontrado"));
@@ -141,7 +137,6 @@ public class AlertaCczService {
         AlertaCczEntity alerta = mapper.toEntity(createDTO);
 
         // Seta os relacionamentos
-        alerta.setMunicipio(municipio);
         alerta.setTipoNotificacao(tipoNotificacao);
         alerta.setUsuario(usuario);
         alerta.setPoint( criarPointDoBancoPelasCoordenadas(createDTO) );
