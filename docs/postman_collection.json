@@ -1,305 +1,434 @@
 {
-	"info": {
-		"_postman_id": "64f8e3b8-ab0d-42c9-ace0-0191a0295c3d",
-		"name": "CCZ Online - Fase 5",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "44920548"
-	},
-	"item": [
-		{
-			"name": "CRUD Usuários",
-			"item": [
-				{
-					"name": "get usuarios",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/usuarios",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"usuarios"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "usuario by ID",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code é 200 - OK\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Resposta contém nome do restaurante\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property(\"nome\");\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/usuarios/2",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"usuarios",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "inserir usuario",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"\r",
-									"// Verifica se o status da resposta é 201\r",
-									"pm.test(\"Status code é 201 - Created\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Resposta contém ID do novo recurso\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property(\"id\");\r",
-									"});\r",
-									"\r",
-									"let response = pm.response.json();\r",
-									"pm.environment.set(\"usuarioId\", response.id);\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{tokenJwt}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": " {\r\n    \"cartaoSus\": 987654321012345,\r\n    \"cpf\": \"07270787980\",\r\n    \"nome\": \"lessandro schneider\",\r\n    \"perfil\": \"CIDADAO\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/usuarios",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"usuarios"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "atualizar usuario",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code é 200 - OK\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{tokenJwt}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"cartaoSus\": 987654321012345,\r\n    \"cpf\": \"07270787980\",\r\n    \"id\": 7,\r\n    \"nome\": \"lessandro schneider\",\r\n    \"perfil\": \"CIDADAO\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/usuarios/{{usuarioId}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"usuarios",
-								"{{usuarioId}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "apagar usuario",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code é 204 - No Content\", function () {\r",
-									"    pm.response.to.have.status(204);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{tokenJwt}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/usuarios/{{usuarioId}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"usuarios",
-								"{{usuarioId}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "CRUD Alerta CCZ",
-			"item": [
-				{
-					"name": "get alertas",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "LOGIN",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/auth/login",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"auth",
-						"login"
-					]
-				}
-			},
-			"response": []
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"requests": {},
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"requests": {},
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "host",
-			"value": ""
-		},
-		{
-			"key": "cpfLogado",
-			"value": ""
-		}
-	]
+  "info": {
+    "_postman_id": "29a56621-440f-4590-9a55-ac1fbe6b80b0",
+    "name": "CCZ Online - Fase 5",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21463207"
+  },
+  "item": [
+    {
+      "name": "CRUD Usuários",
+      "item": [
+        {
+          "name": "get usuarios",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/usuarios",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "usuario by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code é 200 - OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta contém nome do restaurante\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"nome\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/usuarios/2",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "usuarios",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "inserir usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "\r",
+                  "// Verifica se o status da resposta é 201\r",
+                  "pm.test(\"Status code é 201 - Created\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta contém ID do novo recurso\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\");\r",
+                  "});\r",
+                  "\r",
+                  "let response = pm.response.json();\r",
+                  "pm.environment.set(\"usuarioId\", response.id);\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenJwt}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": " {\r\n    \"cartaoSus\": 987654321012345,\r\n    \"cpf\": \"07270787980\",\r\n    \"nome\": \"lessandro schneider\",\r\n    \"perfil\": \"CIDADAO\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/usuarios",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "atualizar usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code é 200 - OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenJwt}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"cartaoSus\": 987654321012345,\r\n    \"cpf\": \"07270787980\",\r\n    \"id\": 7,\r\n    \"nome\": \"lessandro schneider\",\r\n    \"perfil\": \"CIDADAO\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/usuarios/{{usuarioId}}",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{usuarioId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "apagar usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code é 204 - No Content\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenJwt}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/usuarios/{{usuarioId}}",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{usuarioId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CRUD Alerta CCZ",
+      "item": [
+        {
+          "name": "get alertas",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenJwt}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": " {\r\n    \"cartaoSus\": 987654321012345,\r\n    \"cpf\": \"07270787980\",\r\n    \"nome\": \"lessandro schneider\",\r\n    \"perfil\": \"CIDADAO\"\r\n}"
+            },
+            "url": {
+              "raw": "{{host}}/alertas-ccz",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "alertas-ccz"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CRUD Alerta Cidadao",
+      "item": [
+        {
+          "name": "get alertas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/alertas-cidadao/2",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "alertas-cidadao",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CRUD especies",
+      "item": [
+        {
+          "name": "get especies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/especies",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "especies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "apagar especie",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/especies/3",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "especies",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CRUD tipo notificação",
+      "item": [
+        {
+          "name": "get tipos not",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/tipos-notificacao",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "tipos-notificacao"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "apagar tipo",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/tipos-notificacao/3",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "tipos-notificacao",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "LOGIN",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/auth/login",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    },
+    {
+      "key": "cpfLogado",
+      "value": ""
+    }
+  ]
 }

@@ -1,9 +1,11 @@
+import { showAlert } from '@/components/alert/AlertService';
 import { API_URLS } from '@/config/api';
+import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -76,7 +78,7 @@ const CadastroUsuarioScreen = () => {
   // Função para enviar dados para a API
   const cadastrarUsuario = async () => {
     if (!validarFormulario()) {
-      Alert.alert('Erro de Validação', 'Por favor, corrija os erros no formulário');
+      showAlert('Erro de Validação', 'Por favor, corrija os erros no formulário', 'alert');
       return;
     }
 
@@ -101,16 +103,9 @@ const CadastroUsuarioScreen = () => {
       console.log(response)
       console.log(data)
       if (response.status == 201) {
-        Alert.alert(
-          'Sucesso!',
-          'Usuário cadastrado com sucesso',
-          [
-            {
-              text: 'OK',
-              onPress: () => limparFormulario()
-            }
-          ]
-        );
+       
+       showAlert('Sucesso!','Usuário cadastrado com sucesso','success');
+        
       } else {
         console.log('caiu no erro', data)
         // Trata erros da API
@@ -122,14 +117,13 @@ const CadastroUsuarioScreen = () => {
           mensagemErro = data.message;
         }
 
-        Alert.alert('Erro', mensagemErro);
+        showAlert('Atenção', mensagemErro, 'alert');
       }
     } catch (error) {
+      
       console.error('Erro:', error);
-      Alert.alert(
-        'Erro de Conexão',
-        'Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.'
-      );
+      showAlert('Erro de Conexão','Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.','alert');
+      
     } finally {
       setLoading(false);
     }
@@ -252,13 +246,26 @@ const CadastroUsuarioScreen = () => {
               )}
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.button, styles.buttonSecondary]}
-              onPress={limparFormulario}
-              disabled={loading}
-            >
-              <Text style={styles.buttonTextSecondary}>Limpar</Text>
-            </TouchableOpacity>
+            <View style={styles.coordsRow}>
+
+              <TouchableOpacity
+                style={[styles.button, styles.buttonSecondary]}
+                onPress={limparFormulario}
+                disabled={loading}
+                >
+                <Ionicons name="trash-bin" size={20}/>
+                <Text style={styles.buttonTextSecondary}>Limpar</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                    style={[styles.button, styles.buttonSecondary]}
+                    onPress={router.back}
+                    disabled={loading}
+                    >
+                    <Ionicons name="arrow-back" size={20}/>
+                    <Text style={styles.buttonTextSecondary}>Voltar</Text>
+                  </TouchableOpacity>
+                </View>
           </View>
         </View>
       </ScrollView>
@@ -270,6 +277,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5F5F5',
+  },
+  coordsRow: {
+    flexDirection: 'row',
   },
   scrollContent: {
     flexGrow: 1,
@@ -360,6 +370,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#3498DB',
+    margin: 5,
+    flex: 1,
   },
   buttonText: {
     color: '#FFFFFF',
