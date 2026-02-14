@@ -5,11 +5,7 @@ Baseado nas limitações encontradas na área de controle de zoonoses, esse proj
 
 
 ## Vídeo de apresentação
-
-
-
-## A Arquitetura
-
+[Pitch e funcionamento da aplicação](https://drive.google.com/drive/u/1/folders/1kkN0c2gEqYtE7vl_U11Z-Msuy5pexNGy)
 
 ## Tecnologias utilizadas
 
@@ -30,14 +26,15 @@ Baseado nas limitações encontradas na área de controle de zoonoses, esse proj
 Certifique-se de ter **Docker** e **Docker Compose** instalados.
 
 Execute o comando abaixo na raiz do projeto:
-
+Case esteja no powershell
 ```bash
-docker compose build 
+$env:EXPO_PUBLIC_GOOGLE_MAPS_API_KEY="CHAVE DA API DO GOOGLE MAPS"
+docker compose up --build 
 ```
-e depois
+Case esteja no Bash
 
 ```bash
-docker compose up 
+EXPO_PUBLIC_GOOGLE_MAPS_API_KEY=CHAVE DA API DO GOOGLE MAPS docker compose up --build
 ```
 
 ## Documentação da API (Swagger)
